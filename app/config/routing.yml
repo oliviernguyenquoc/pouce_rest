@@ -1,3 +1,31 @@
+pouce_site:
+    resource: "@PouceSiteBundle/Resources/config/routing.yml"
+    prefix:   /
+
+pouce_o_auth_server:
+    resource: "@PouceOAuthServerBundle/Resources/config/routing.yml"
+    prefix:   /
+    
 app:
     resource: "@AppBundle/Controller/"
     type:     annotation
+
+fos_oauth_server_token:
+    resource: "@FOSOAuthServerBundle/Resources/config/routing/token.xml"
+
+fos_oauth_server_authorize:
+    resource: "@FOSOAuthServerBundle/Resources/config/routing/authorize.xml"
+
+NelmioApiDocBundle:
+    resource: "@NelmioApiDocBundle/Resources/config/routing.yml"
+    prefix:   /api/doc
+
+pouce_user: 
+    type: rest
+    prefix: /api
+    resource: "@PouceUserBundle/Resources/config/routing.yml"
+
+pouce_team: 
+    type: rest
+    prefix: /api
+    resource: "@PouceTeamBundle/Resources/config/routing.yml"

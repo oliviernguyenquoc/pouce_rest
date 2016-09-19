@@ -1,0 +1,5 @@
+users : 
+    type: rest
+    prefix: /v1
+    resource: 'Pouce\UserBundle\Controller\UserController'
+    name_prefix: api_1_ # naming collision

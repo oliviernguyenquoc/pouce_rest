@@ -2,6 +2,10 @@ imports:
     - { resource: parameters.yml }
     - { resource: security.yml }
     - { resource: services.yml }
+    - { resource: "@PouceUserBundle/Resources/config/services.yml" }
+    - { resource: "@PouceTeamBundle/Resources/config/services.yml" }
+    - { resource: "@PouceOAuthServerBundle/Resources/config/services.yml" }
+    - { resource: "@PouceSiteBundle/Resources/config/services.yml" }
 
 # Put parameters here that don't need to change on each machine where the app is deployed
 # http://symfony.com/doc/current/best_practices/configuration.html#application-related-configuration
@@ -66,3 +70,58 @@ swiftmailer:
     username:  "%mailer_user%"
     password:  "%mailer_password%"
     spool:     { type: memory }
+
+# FOSUser Configuration
+fos_user:
+    db_driver:          orm                       # Le type de BDD à utiliser, nous utilisons l'ORM Doctrine depuis le début
+    firewall_name:      main                      # Le nom du firewall derrière lequel on utilisera ces utilisateurs
+    user_class:         Pouce\UserBundle\Entity\User # La classe de l'entité User que nous utilisons
+    from_email:
+        address:        staff@poucedor.fr
+        sender_name:    Pouce d'Or
+    # registration:
+    #     form:
+    #         type:       pouce_user_registration #Le custom form que l'on va utiliser
+    #     confirmation:
+    #         enabled:    true
+    #         template:   email/confirmation.email.twig
+    # service:
+    #     mailer:  fos_user.mailer.twig_swift
+    # resetting:
+    #     email:
+    #         template: email/password_resetting.email.twig
+
+fos_oauth_server:
+    db_driver: orm
+    client_class:        Pouce\OAuthServerBundle\Entity\Client
+    access_token_class:  Pouce\OAuthServerBundle\Entity\AccessToken
+    refresh_token_class: Pouce\OAuthServerBundle\Entity\RefreshToken
+    auth_code_class:     Pouce\OAuthServerBundle\Entity\AuthCode
+    service:
+        user_provider: fos_user.user_provider.username_email
+fos_rest:
+    param_fetcher_listener: true
+    body_listener: true
+    format_listener: true
+    view:
+        view_response_listener: 'force'
+        formats:
+            xml: true
+            json : true
+        templating_formats:
+            html: true
+        force_redirects:
+            html: true
+        failed_validation: HTTP_BAD_REQUEST
+        default_engine: twig
+    routing_loader:
+        default_format: json
+
+jms_serializer:
+    metadata:
+        directories:
+            FOSUB:
+                namespace_prefix: "FOS\\UserBundle"
+                path: "%kernel.root_dir%/serializer/FOSUserBundle"
+
+nelmio_api_doc: ~
