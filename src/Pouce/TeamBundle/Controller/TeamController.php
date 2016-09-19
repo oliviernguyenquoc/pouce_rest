@@ -25,7 +25,7 @@ class TeamController extends Controller
 	 * )
 	 *
 	 * GET Route annotation
-	 * @Get("/team/{id}")
+	 * @Get("/teams/{id}")
 	 */
 	public function getTeamAction($id){
 
@@ -72,7 +72,7 @@ class TeamController extends Controller
 	 * )
 	 *
 	 * GET Route annotation
-	 * @Get("/team/last/{idUser}")
+	 * @Get("users/{idUser}/teams/last")
 	 */
 	public function getLastTeamIdOfAUserAction($idUser){
 		

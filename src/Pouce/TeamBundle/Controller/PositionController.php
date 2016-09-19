@@ -25,7 +25,7 @@ class PositionController extends Controller
 	 * )
 	 *
 	 * GET Route annotation
-	 * @Get("/positions/last/{teamId}")
+	 * @Get("/teams/{teamId}/positions/last/")
 	 */
 	public function getLastPositionAction($teamId){
 
@@ -70,7 +70,7 @@ class PositionController extends Controller
 	 * )
 	 *
 	 * GET Route annotation
-	 * @Get("/positions/all/{teamId}")
+	 * @Get("/teams/{teamId}/positions/all/")
 	 */
 	public function getAllPositionsAction($teamId){
 		
@@ -114,7 +114,7 @@ class PositionController extends Controller
 	 * )
 	 *
 	 * GET Route annotation
-	 * @Get("/positions/{teamId}")
+	 * @Get("/teams/{teamId}/positions")
 	 */
 	public function getPositionsAction($teamId){
 

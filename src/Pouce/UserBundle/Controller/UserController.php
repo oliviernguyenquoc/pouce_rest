@@ -25,7 +25,7 @@ class UserController extends Controller
 	 * )
 	 *
 	 * GET Route annotation
-	 * @Get("/user/{id}")
+	 * @Get("/users/{id}")
 	 */
 	public function getUserAction($id){
 		$user = $this->getDoctrine()->getRepository('PouceUserBundle:User')->findOneBy(array('id' => $id));
