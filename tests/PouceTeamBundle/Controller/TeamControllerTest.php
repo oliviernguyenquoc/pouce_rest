@@ -17,6 +17,10 @@ class TeamControllerTest extends WebTestCase
         $content = json_decode($response->getContent(), true);
         $this->assertArrayHasKey('name', $content);
         $this->assertTrue(isset($content['id']));
+        $this->assertTrue(isset($content['user 1']['id']));
+        $this->assertTrue(isset($content['user 2']['id']));
+        $this->assertTrue(isset($content['edition']['id']));
+        $this->assertTrue(isset($content['positions'][0]['id']));
     }
 
     public function testGetLastIdOfAUser()

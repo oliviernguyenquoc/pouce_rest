@@ -43,16 +43,16 @@ class TeamController extends Controller
 		$user1 = $this->forward('PouceUserBundle:User:getUser', array('id' => $userId1), array('_format' => 'json'));
 		$user2 = $this->forward('PouceUserBundle:User:getUser', array('id' => $userId2), array('_format' => 'json'));
 
-		$positions = $this->forward('PouceTeamBundle:Position:getPositions', array('teamId' => $team->getId()), array('_format' => 'json'));
+		$positions = $this->forward('PouceTeamBundle:Position:getPositions', array('id' => $team->getId()), array('_format' => 'json'));
+
+		$edition = $this->forward('PouceSiteBundle:Edition:getEdition', array('id' => $team->getEdition()->getId()), array('_format' => 'json'));
 
 		return array(
 			'id'		=> $team->getId(),
 			'name'		=> $team->getTeamName(),
 			'user 1' 	=> json_decode($user1->getContent(), true),
 			'user 2' 	=> json_decode($user2->getContent(), true),
-			'edition'	=> array(
-				'date'	=> $team->getEdition()->getDateOfEvent()
-			),
+			'edition'	=> json_decode($edition->getContent(), true),
 			'positions' => json_decode($positions->getContent(), true)
 		);
 	}

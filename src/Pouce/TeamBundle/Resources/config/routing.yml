@@ -1,11 +1,17 @@
-team : 
+team: 
     type: rest
     prefix: /v1
     resource:     'Pouce\TeamBundle\Controller\TeamController'
     name_prefix:  api_1_
 
-position :
+position:
     type: rest
     prefix: /v1
     resource:     'Pouce\TeamBundle\Controller\PositionController'
+    name_prefix:  api_1_
+
+result:
+    type: rest
+    prefix: /v1
+    resource:     'Pouce\TeamBundle\Controller\ResultController'
     name_prefix:  api_1_
