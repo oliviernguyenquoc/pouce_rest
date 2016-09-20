@@ -39,22 +39,12 @@ class ResultController extends Controller
 	{
 		$em = $this->getDoctrine()->getManager();
 
-		$repositoryPosition = $em->getRepository('PouceTeamBundle:Position');
 		$repositoryResult = $em->getRepository('PouceTeamBundle:Result');
-		$repositoryUser = $em->getRepository('PouceUserBundle:User');
-		$repositoryTeam = $em->getRepository('PouceTeamBundle:Team');
-
-
-		$team = $repositoryTeam->find($id);
-		$edition = $team->getEdition();
-
-		$positions = $repositoryPosition->findAllPositionsByTeam($id);
-		$school = $repositoryUser->findAUserOfTeam($team)->getSchool();
 
 		$result = $repositoryResult->findOneByTeam($id);
-		$comment = $result->getComment();
+		// $comment = $result->getComment();
 
-		$team = $this->forward('PouceTeamBundle:Team:getTeam', array('id' => $team->getId()), array('_format' => 'json'));
+		$team = $this->forward('PouceTeamBundle:Team:getTeam', array('id' => $id), array('_format' => 'json'));
 
 		// // create a converter object and handle the input
 		// $converter = new Converter();
@@ -65,16 +55,23 @@ class ResultController extends Controller
 		// 	$html = NULL;
 		// }
 
+		$positionFuthest = $result->getPosition();
+
 		return  array(
-			// 'html'	=> $html,
-			'result' 	=> $result,
-			// 'edition' => 
-			// 	array(
-			// 		'id'  => $edition->getId()
-			// 	),
-			//'positions' => $positions,
-			//'school' => $school,
-			'team' => $team
+			// 'comment'	=> $html,
+			'id' 				=> $result->getId(),
+			'lateness'			=> $result->getLateness(),
+			'isValid'			=> $result->getIsValid(),
+			'nbCar'				=> $result->getNbCar(),
+			'avis'				=> $result->getAvis(),
+			'furthest position' => array(
+				'id' 		=> $positionFuthest->getId(),
+				'city' 		=> $positionFuthest->getCity()->getName(),
+				'country' 	=> $positionFuthest->getCity()->getCountry()->getName(),
+				'latitude'	=> $positionFuthest->getCity()->getLatitude(),
+				'longitude'	=> $positionFuthest->getCity()->getLongitude()
+			),
+			'rank'				=> $result->getRank(),
 		);	
 	}
 
