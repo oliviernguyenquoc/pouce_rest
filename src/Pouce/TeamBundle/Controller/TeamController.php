@@ -40,10 +40,10 @@ class TeamController extends Controller
 		$userId1 = $users->get(0)->getId();
 		$userId2 = $users->get(1)->getId();
 
-		$user1 = $this->forward('PouceUserBundle:UserRest:getUser', array('id' => $userId1), array('_format' => 'json'));
-		$user2 = $this->forward('PouceUserBundle:UserRest:getUser', array('id' => $userId2), array('_format' => 'json'));
+		$user1 = $this->forward('PouceUserBundle:User:getUser', array('id' => $userId1), array('_format' => 'json'));
+		$user2 = $this->forward('PouceUserBundle:User:getUser', array('id' => $userId2), array('_format' => 'json'));
 
-		$positions = $this->forward('PouceTeamBundle:PositionRest:getPositions', array('teamId' => $team->getId()), array('_format' => 'json'));
+		$positions = $this->forward('PouceTeamBundle:Position:getPositions', array('teamId' => $team->getId()), array('_format' => 'json'));
 
 		return array(
 			'id'		=> $team->getId(),
@@ -63,7 +63,7 @@ class TeamController extends Controller
 	 *   description = "Get informations on a team with the id of a user",
 	 *   requirements={
 	 *      {
-	 *          "name"="idUser",
+	 *          "name"="id",
 	 *          "dataType"="integer",
 	 *          "requirement"="\d+",
 	 *          "description"="id of the user"
@@ -72,19 +72,18 @@ class TeamController extends Controller
 	 * )
 	 *
 	 * GET Route annotation
-	 * @Get("users/{idUser}/teams/last")
+	 * @Get("/users/{id}/teams/last")
 	 */
-	public function getLastTeamIdOfAUserAction($idUser){
+	public function getUserLastTeamAction($id){
 		
-		$team = $this->getDoctrine()->getRepository('PouceTeamBundle:Team')->getLastTeam($idUser)->getSingleResult();
-		
+		$team = $this->getDoctrine()->getRepository('PouceTeamBundle:Team')->getLastTeam($id)->getSingleResult();
 
 		if(!is_object($team)){
 			throw $this->createNotFoundException();
 		}
 
-		return array(
-			'teamId' 	=> $team->getId()
-		);
+		$team = $this->forward('PouceTeamBundle:Team:getTeam', array('id' => $team->getId()), array('_format' => 'json'));
+
+		return json_decode($team->getContent(), true);
 	}
 }

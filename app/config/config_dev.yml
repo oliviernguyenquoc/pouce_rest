@@ -32,3 +32,8 @@ monolog:
 
 #swiftmailer:
 #    delivery_address: me@example.com
+
+security:
+    firewalls:
+        api_firewall:
+            anonymous: true
