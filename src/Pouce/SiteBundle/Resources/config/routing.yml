@@ -3,3 +3,9 @@ edition:
     prefix: /v1
     resource: 'Pouce\SiteBundle\Controller\EditionController'
     name_prefix: api_1_ # naming collision
+
+city: 
+    type: rest
+    prefix: /v1
+    resource: 'Pouce\SiteBundle\Controller\CityController'
+    name_prefix: api_1_ # naming collision

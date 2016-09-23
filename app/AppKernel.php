@@ -25,6 +25,7 @@ class AppKernel extends Kernel
             new Pouce\TeamBundle\PouceTeamBundle(),
             new Pouce\OAuthServerBundle\PouceOAuthServerBundle(),
             new Pouce\SiteBundle\PouceSiteBundle(),
+            new Stof\DoctrineExtensionsBundle\StofDoctrineExtensionsBundle(),
         ];
 
         if (in_array($this->getEnvironment(), ['dev', 'test'], true)) {

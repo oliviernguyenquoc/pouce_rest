@@ -9,7 +9,7 @@ class SchoolControllerTest extends WebTestCase
     public function testGetEditionSchools()
     {
     	$client = $this->createClient();
-        $client->request('GET', '/api/v1/edition/1/schools');
+        $client->request('GET', '/api/v1/editions/1/schools');
 
         $response = $client->getResponse();
         $this->assertEquals(200,$response->getStatusCode());

@@ -57,11 +57,19 @@ doctrine:
         #   2. Uncomment database_path in parameters.yml.dist
         #   3. Uncomment next line:
         #     path:     "%database_path%"
-
     orm:
         auto_generate_proxy_classes: "%kernel.debug%"
         naming_strategy: doctrine.orm.naming_strategy.underscore
         auto_mapping: true
+        dql:
+            string_functions:
+                MONTH: DoctrineExtensions\Query\Mysql\Month
+                YEAR: DoctrineExtensions\Query\Mysql\Year
+
+stof_doctrine_extensions:
+    orm:
+        default:
+            timestampable: true
 
 # Swiftmailer Configuration
 swiftmailer:
@@ -79,9 +87,9 @@ fos_user:
     from_email:
         address:        staff@poucedor.fr
         sender_name:    Pouce d'Or
-    # registration:
-    #     form:
-    #         type:       pouce_user_registration #Le custom form que l'on va utiliser
+    registration:
+        form:
+            type:       Pouce\UserBundle\Form\RegistrationType #Le custom form que l'on va utiliser
     #     confirmation:
     #         enabled:    true
     #         template:   email/confirmation.email.twig
@@ -99,6 +107,7 @@ fos_oauth_server:
     auth_code_class:     Pouce\OAuthServerBundle\Entity\AuthCode
     service:
         user_provider: fos_user.user_provider.username_email
+
 fos_rest:
     param_fetcher_listener: true
     body_listener: true

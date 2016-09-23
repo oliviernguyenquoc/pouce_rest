@@ -40,4 +40,14 @@ class SchoolRepository extends EntityRepository
 
 		return $qb->getQuery()->getResult() ;					
 	}
+
+	public function getAllSchools($year)
+	{
+		$qb = $this	-> createQueryBuilder('s')
+                    -> orderBy('s.name','ASC')
+                    ;
+
+
+		return $qb ;					
+	}
 }

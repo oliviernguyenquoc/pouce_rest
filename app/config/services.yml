@@ -4,6 +4,21 @@ parameters:
 #    parameter_name: value
 
 services:
+    fos_user.doctrine_registry:
+        alias: doctrine
+    pouce_user.registration.form.type:
+        class: Pouce\UserBundle\Form\RegistrationType
+        #arguments: [%fos_user.model.user.class%]
+        tags:
+            - { name: form.type, alias: pouce_user_registration }
+    pouce_user_registration_listener:
+        class: Pouce\UserBundle\EventListener\UserRegistrationListener
+        tags:
+            - { name: kernel.event_subscriber }
+    pouce_user.user:
+        class: Pouce\UserBundle\Services\PouceUser
+
+        #arguments: ['@service_container', Pouce\UserBundle\Entity\User]
 #    service_name:
 #        class: AppBundle\Directory\ClassName
 #        arguments: ["@another_service_name", "plain_value", "%parameter_name%"]
