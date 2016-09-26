@@ -17,6 +17,8 @@ class TeamControllerTest extends WebTestCase
         $content = json_decode($response->getContent(), true);
         $this->assertArrayHasKey('name', $content);
         $this->assertTrue(isset($content['id']));
+        $this->assertTrue(isset($content['comment']));
+        $this->assertTrue(isset($content['targetDestination']));
         $this->assertTrue(isset($content['user 1']['id']));
         $this->assertTrue(isset($content['user 2']['id']));
         $this->assertTrue(isset($content['edition']['id']));
@@ -67,15 +69,15 @@ class TeamControllerTest extends WebTestCase
         //Get user to have his id
         $client_1 = $this->createClient();
         $client_1->request('GET', '/api/v1/users/email/'.'tryteam1@tryteam.com');
-        $content_1 = json_decode($client_1->getResponse()->getContent(), true);
+        $user = json_decode($client_1->getResponse()->getContent(), true);
 
         //Find his team
         $client_2 = $this->createClient();
-        $client_2->request('GET', '/api/v1/users/'.$content_1['id'].'/teams/last');
-        $content_2 = json_decode($client_2->getResponse()->getContent(), true);
+        $client_2->request('GET', '/api/v1/users/'.$user['id'].'/teams/last');
+        $team = json_decode($client_2->getResponse()->getContent(), true);
 
         $client = $this->createClient();
-        $client->request('DELETE', '/api/v1/teams/'.$content_2['id']);
+        $client->request('DELETE', '/api/v1/teams/'.$team['id']);
 
         $response = $client->getResponse();
         $this->assertEquals(204,$response->getStatusCode());
@@ -90,7 +92,7 @@ class TeamControllerTest extends WebTestCase
     */
     public function testConditionInPostTeam()
     {
-         //We create 3 tests users
+        //We create 3 tests users
         $this->createUser('1','Homme');
         $this->createUser('2','Femme');
         $this->createUser('3','Femme');
@@ -147,20 +149,86 @@ class TeamControllerTest extends WebTestCase
         //Get user to have his id
         $client_1 = $this->createClient();
         $client_1->request('GET', '/api/v1/users/email/'.'tryteam1@tryteam.com');
-        $content_1 = json_decode($client_1->getResponse()->getContent(), true);
+        $user = json_decode($client_1->getResponse()->getContent(), true);
 
         //Find his team
         $client_2 = $this->createClient();
-        $client_2->request('GET', '/api/v1/users/'.$content_1['id'].'/teams/last');
-        $content_2 = json_decode($client_2->getResponse()->getContent(), true);
+        $client_2->request('GET', '/api/v1/users/'.$user['id'].'/teams/last');
+        $team = json_decode($client_2->getResponse()->getContent(), true);
 
         $client = $this->createClient();
-        $client->request('DELETE', '/api/v1/teams/'.$content_2['id']);
+        $client->request('DELETE', '/api/v1/teams/'.$team['id']);
 
         //We delete tests users
         $this->deleteUser('1');
         $this->deleteUser('2');
         $this->deleteUser('3');
+    }
+
+    public function testPutTeam()
+    {
+        //We create 3 tests users
+        $this->createUser('1','Homme');
+        $this->createUser('2','Femme');
+
+        /* **************  We create a test team  *************** */
+        $data_1 = array(
+            'teamName'          => 'tryTeam',
+            'targetDestination' => 'tryDestination',
+            'comment'           => 'A Try Comment',
+            'editionId'         => 1,
+            'userEmail1'        => 'tryteam1@tryteam.com',
+            'userEmail2'        => 'tryteam2@tryteam.com'
+        );
+
+        $client_1 = $this->createClient();
+        $client_1->request('POST','/api/v1/teams',array(), array(), array('CONTENT_TYPE' => 'application/json'), json_encode($data_1));
+
+        /* **************  We modify the team  *************** */
+        $data_2 = array(
+            'teamName'          => 'tryTeam2',
+            'targetDestination' => 'tryDestination2',
+            'comment'           => 'A Try Comment2'
+        );
+
+        //Get user to have his id
+        $client_1 = $this->createClient();
+        $client_1->request('GET', '/api/v1/users/email/'.'tryteam1@tryteam.com');
+        $user = json_decode($client_1->getResponse()->getContent(), true);
+
+        //Find his team
+        $client_2 = $this->createClient();
+        $client_2->request('GET', '/api/v1/users/'.$user['id'].'/teams/last');
+        $team = json_decode($client_2->getResponse()->getContent(), true);
+
+        //PUT test
+        $client = $this->createClient();
+        $client->request('PUT','/api/v1/teams/'.$team['id'],array(), array(), array('CONTENT_TYPE' => 'application/json'), json_encode($data_2));
+
+        $response = $client->getResponse();
+        $this->assertEquals(200, $response->getStatusCode());
+
+        $content = $response->getContent();
+        $this->assertEquals($content,"Team modified.");
+
+
+        /* ***** Remove team and verify if the team has been modified  ******/
+        //Verify that the team have been modified
+        $client_2 = $this->createClient();
+        $client_2->request('GET', '/api/v1/teams/'.$team['id']);
+        $team = json_decode($client_2->getResponse()->getContent(), true);
+
+        $this->assertEquals('tryTeam2', $team['name']);
+        $this->assertEquals('tryDestination2', $team['targetDestination']);
+        $this->assertEquals('A Try Comment2', $team['comment']);
+
+
+        $client = $this->createClient();
+        $client->request('DELETE', '/api/v1/teams/'.$team['id']);
+
+        //We delete tests users
+        $this->deleteUser('1');
+        $this->deleteUser('2');
     }
 
     /*

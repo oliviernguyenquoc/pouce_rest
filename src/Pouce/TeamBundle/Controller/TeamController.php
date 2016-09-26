@@ -59,12 +59,14 @@ class TeamController extends Controller
 		$edition = $this->forward('PouceSiteBundle:Edition:getEdition', array('id' => $team->getEdition()->getId()), array('_format' => 'json'));
 
 		return array(
-			'id'		=> $team->getId(),
-			'name'		=> $team->getTeamName(),
-			'user 1' 	=> json_decode($user1->getContent(), true),
-			'user 2' 	=> json_decode($user2->getContent(), true),
-			'edition'	=> json_decode($edition->getContent(), true),
-			'positions' => json_decode($positions->getContent(), true)
+			'id'				=> $team->getId(),
+			'name'				=> $team->getTeamName(),
+			'user 1' 			=> json_decode($user1->getContent(), true),
+			'user 2' 			=> json_decode($user2->getContent(), true),
+			'edition'			=> json_decode($edition->getContent(), true),
+			'positions' 		=> json_decode($positions->getContent(), true),
+			'targetDestination'	=> $team->getTargetDestination(),
+			'comment'			=> $team->getComment()
 		);
 	}
 
@@ -235,14 +237,10 @@ class TeamController extends Controller
 		$team = $em ->getRepository('PouceTeamBundle:Team')->find($request->get('id'));
 
 		if (empty($team)) {
-            return new JsonResponse(['message' => 'Place not found'], Response::HTTP_NOT_FOUND);
+            throw $this->createNotFoundException();
         }
 
-		//Des variables pour le formType
-		$user = $this->getUser();
-		$school =$user->getSchool();
-
-		$form = $this->get('form.factory')->create(new TeamEditType($school,$user), $team);
+		$form = $this->get('form.factory')->create(TeamType::class, $team);
 
 		$form->submit($request->request->all());
 
@@ -251,7 +249,8 @@ class TeamController extends Controller
 			$em->persist($team);
 			$em->flush();
 
-			return $team;
+			$response = new Response("Team modified.", 200);  
+			return $response;
 		}
 		else
 		{
