@@ -75,6 +75,9 @@ class RegistrationType extends AbstractType
             ));
     }
 
+    /**
+     * @param OptionsResolver $resolver
+     */
     public function configureOptions(OptionsResolver $resolver)
     {
         $resolver->setDefaults(array(

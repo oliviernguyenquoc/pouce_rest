@@ -209,8 +209,8 @@ class UserController extends Controller
         return $this->get('fos_rest.view_handler')->handle($view);
     }
 
-	  /**
-      * @ApiDoc(
+	/**
+     * @ApiDoc(
 	 *   resource = true,
 	 *   description = "Delete a User",
 	 *   requirements={

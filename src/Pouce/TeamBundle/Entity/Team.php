@@ -50,6 +50,13 @@ class Team
 
     /**
      * @var string
+     *
+     * @ORM\Column(name="comment", type="string", length=500)
+     */
+    private $comment;
+
+    /**
+     * @var string
      * @Assert\NotBlank()
      *
      * @ORM\Column(name="targetDestination", type="string", length=255)
@@ -162,6 +169,29 @@ class Team
     public function getTeamName()
     {
         return $this->teamName;
+    }
+
+    /**
+     * Set comment
+     *
+     * @param string $comment
+     * @return Team
+     */
+    public function setComment($comment)
+    {
+        $this->comment = $comment;
+
+        return $this;
+    }
+
+    /**
+     * Get comment
+     *
+     * @return string 
+     */
+    public function getComment()
+    {
+        return $this->comment;
     }
 
     /**

@@ -104,7 +104,6 @@ class UserControllerTest extends WebTestCase
         $client_temp->request('GET', '/api/v1/users/email/'.'tryTeam@tryteam.com');
         $response = $client_temp->getResponse();
         $content = json_decode($response->getContent(), true);
-        //dump($content['id']);
 
         $client = $this->createClient();
         $client->request('DELETE', '/api/v1/users/'.$content['id']);

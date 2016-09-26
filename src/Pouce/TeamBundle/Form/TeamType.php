@@ -5,70 +5,53 @@ namespace Pouce\TeamBundle\Form;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolverInterface;
+use Symfony\Component\Form\Extension\Core\Type\TextType;
+use Symfony\Component\Form\Extension\Core\Type\TextareaType;
+use Symfony\Bridge\Doctrine\Form\Type\EntityType;
+use Symfony\Component\OptionsResolver\OptionsResolver;
 
 use Pouce\UserBundle\Entity\User;
 use Pouce\UserBundle\Entity\School;
 
 class TeamType extends AbstractType
 {
-    private $schoolId, $userYear;
-
-    public function __construct( School $school, User $user)
-    {
-        $userYear=$user->getLastLogin()->format('Y');
-        $schoolId=$school->getId();
-        $userId=$user->getId();
-
-        $this->schoolId = $schoolId;
-        $this->userYear = $userYear;
-        $this->userId = $userId;
-    }
-
-
     /**
      * @param FormBuilderInterface $builder
      * @param array $options
      */
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
-        $schoolId = $this->schoolId;
-        $userYear = $this->userYear;
-        $userId = $this->userId;
-
         $builder
-            ->add('teamName', 'text', array(
+            ->add('teamName', TextType::class, array(
                 'label'=> 'Nom de l\'équipe',
                 'required'    => true
             ))
-            ->add('targetDestination','text', array(
+            ->add('targetDestination', TextType::class, array(
                 'label'=> 'Jusqu\'où pensez vous arrivez',
                 'required'    => true
             ))
-            ->add('comment', 'textarea', array(
+            ->add('comment', TextareaType::class, array(
                 'required'    => true,
                 'label' => 'Un commentaire'
             ))
-            ->add('users','entity', array(
-                'class'=>'PouceUserBundle:User',
-                'label' => 'Co-équipié',
-                'property'=>'completeName',
-                //La liste des participants proposés sont toutes les personnes s'étant connecté ou inscrit cette année, n'ayant pas d'équipe
-                'query_builder' => function(\Pouce\UserBundle\Entity\UserRepository $er) use($schoolId,$userYear,$userId) {
-                    return $er-> getAllFreeUsersInSchool($schoolId,$userYear,$userId);
-                },
-                'required'  => true,
-                "multiple" => false,
-            ))
+            // ->add('users', EntityType::class, array(
+            //     'class'=>'PouceUserBundle:User',
+            //     'label' => 'Co-équipié',
+            //     'choice_value'=>'email',
+            //     'required'  => true,
+            // ))
             ;
     }
     
     /**
-     * @param OptionsResolverInterface $resolver
+     * @param OptionsResolver $resolver
      */
-    public function setDefaultOptions(OptionsResolverInterface $resolver)
+    public function configureOptions(OptionsResolver $resolver)
     {
         $resolver->setDefaults(array(
-            'data_class' => 'Pouce\TeamBundle\Entity\Team'
+            'data_class' => 'Pouce\TeamBundle\Entity\Team',
+            'csrf_protection' => false,
+            'allow_extra_fields' => true
         ));
     }
 
