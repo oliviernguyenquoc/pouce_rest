@@ -34,6 +34,11 @@ class TeamType extends AbstractType
                 'required'    => true,
                 'label' => 'Un commentaire'
             ))
+            ->add('startCity', EntityType::class, array(
+                'class' => 'PouceSiteBundle:City',
+                'choice_value' => 'id',
+                'label' => 'Départ',
+            ))
             // ->add('users', EntityType::class, array(
             //     'class'=>'PouceUserBundle:User',
             //     'label' => 'Co-équipié',

@@ -17,10 +17,9 @@ services:
             - { name: kernel.event_subscriber }
     pouce_user.user:
         class: Pouce\UserBundle\Services\PouceUser
-    pouce_team.team:
-        class: Pouce\TeamBundle\Services\PouceTeam
-        arguments: ["@doctrine.orm.entity_manager"]
-        #arguments: ['@service_container', Pouce\UserBundle\Entity\User]
+    pouce_team.trajet:
+        class: Pouce\TeamBundle\Services\PouceTrajet
+
 #    service_name:
 #        class: AppBundle\Directory\ClassName
 #        arguments: ["@another_service_name", "plain_value", "%parameter_name%"]

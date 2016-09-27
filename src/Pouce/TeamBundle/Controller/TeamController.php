@@ -58,6 +58,21 @@ class TeamController extends Controller
 
 		$edition = $this->forward('PouceSiteBundle:Edition:getEdition', array('id' => $team->getEdition()->getId()), array('_format' => 'json'));
 
+		$startCity = $team->getStartCity();
+
+		if($startCity != null)
+		{
+			$startCityName = $team->getStartCity()->getName();
+			$startCityLat  = $team->getStartCity()->getLatitude();
+			$startCityLong = $team->getStartCity()->getLongitude();
+		}
+		else
+		{
+			$startCityName = null;
+			$startCityLat  = null;
+			$startCityLong = null;
+		}
+
 		return array(
 			'id'				=> $team->getId(),
 			'name'				=> $team->getTeamName(),
@@ -66,7 +81,13 @@ class TeamController extends Controller
 			'edition'			=> json_decode($edition->getContent(), true),
 			'positions' 		=> json_decode($positions->getContent(), true),
 			'targetDestination'	=> $team->getTargetDestination(),
-			'comment'			=> $team->getComment()
+			'comment'			=> $team->getComment(),
+			'start_city'		=> $startCityName,
+			'location'	=> array(
+				'lat'		=> $startCityLat,
+				'long'		=> $startCityLong
+				)
+
 		);
 	}
 
@@ -81,8 +102,6 @@ class TeamController extends Controller
 	 */
 	public function postTeamAction(Request $request)
 	{
-		//$user = $this->get('security.token_storage')->getToken()->getUser();
-
 		//Get users and throw Exception if not exist
 		$user_email_1 = $request->request->get("userEmail1");
 		$user_email_2 = $request->request->get("userEmail2");
@@ -149,7 +168,6 @@ class TeamController extends Controller
 		else {
             return $form;
         }
-
 	}
 
 	/**
@@ -215,8 +233,7 @@ class TeamController extends Controller
     public function removeTeamAction(Request $request)
     {
         $em = $this->getDoctrine()->getManager();
-        $team = $em->getRepository('PouceTeamBundle:Team')
-        				->find($request->get('id'));
+        $team = $em->getRepository('PouceTeamBundle:Team')->find($request->get('id'));
 
         $em->remove($team);
         $em->flush();

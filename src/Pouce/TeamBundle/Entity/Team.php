@@ -40,6 +40,11 @@ class Team
     private $result;
 
     /**
+     * @ORM\ManyToOne(targetEntity="Pouce\SiteBundle\Entity\City", cascade={"persist"})
+    */
+    private $startCity;
+
+    /**
      * @var string
      * @Assert\NotBlank()
      * @Assert\NotNull()
@@ -307,5 +312,28 @@ class Team
     public function getEdition()
     {
         return $this->edition;
+    }
+
+    /**
+     * Set startCity
+     *
+     * @param \Pouce\SiteBundle\Entity\City $startCity
+     * @return Team
+     */
+    public function setStartCity(\Pouce\SiteBundle\Entity\City $startCity = null)
+    {
+        $this->startCity = $startCity;
+
+        return $this;
+    }
+
+    /**
+     * Get startCity
+     *
+     * @return \Pouce\SiteBundle\Entity\City  
+     */
+    public function getStartCity()
+    {
+        return $this->startCity;
     }
 }
