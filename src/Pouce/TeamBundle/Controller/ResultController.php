@@ -23,6 +23,7 @@ class ResultController extends Controller
 	/**
 	 * @ApiDoc(
 	 *   resource = true,
+	 *   section="Result",
 	 *   description = "Get results of a team",
 	 *   requirements={
 	 *      {
@@ -66,6 +67,7 @@ class ResultController extends Controller
 	/**
 	 * @ApiDoc(
 	 *   resource = true,
+	 *   section="Result",
 	 *   description = "Add a result",
      *   statusCodes={
      *         201="Returned when successful"

@@ -61,6 +61,7 @@ class TeamController extends Controller
 	 *
 	 * @ApiDoc(
 	 *   resource = true,
+	 *   section="Team",
 	 *   description = "Get informations on a team with the id of a team",
 	 *   requirements={
 	 *      {
@@ -117,6 +118,7 @@ class TeamController extends Controller
 	 * 
 	 * @ApiDoc(
 	 *   resource = true,
+	 *   section="Team",
 	 *   description = "Add a team",
      *   statusCodes={
      *         201="Returned when successful",
@@ -243,6 +245,7 @@ class TeamController extends Controller
     /**
      * @ApiDoc(
 	 *   resource = true,
+	 *   section="Team",
 	 *   description = "Delete a Team",
 	 *   requirements={
 	 *      {
@@ -282,6 +285,7 @@ class TeamController extends Controller
 	 * 
 	 * @ApiDoc(
 	 *   resource = true,
+	 *   section="Team",
 	 *   description = "Update a team",
 	 *   requirements={
 	 *      {
@@ -364,6 +368,7 @@ class TeamController extends Controller
 	 * 
 	 * @ApiDoc(
 	 *   resource = true,
+	 *   section="Team",
 	 *   description = "Get informations on a team with the id of a user",
 	 *   requirements={
 	 *      {

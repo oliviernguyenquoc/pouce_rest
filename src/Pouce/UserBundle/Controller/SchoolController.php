@@ -18,6 +18,7 @@ class SchoolController extends Controller
 	/**
 	 * @ApiDoc(
 	 *   resource = true,
+	 *   section="School",
 	 *   description = "Get all schools in a edition",
 	 *   requirements={
 	 *      {
@@ -58,6 +59,7 @@ class SchoolController extends Controller
 	/**
 	 * @ApiDoc(
 	 *   resource = true,
+	 *   section="School",
 	 *   description = "Get informations on a school",
 	 *   requirements={
 	 *      {

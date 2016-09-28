@@ -21,6 +21,7 @@ class CityController extends Controller
     /**
      * @ApiDoc(
      *   resource = true,
+     *   section="City",
      *   description = "Get informations on a city",
      *   requirements={
      *      {

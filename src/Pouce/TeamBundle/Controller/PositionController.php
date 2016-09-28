@@ -37,6 +37,7 @@ class PositionController extends Controller
 	 * 
 	 * @ApiDoc(
 	 *   resource = true,
+	 *   section="Position",
 	 *   description = "Get informations on the last position of a team",
 	 *   requirements={
 	 *      {
@@ -116,6 +117,7 @@ class PositionController extends Controller
 	 * 
 	 * @ApiDoc(
 	 *   resource = true,
+	 *   section="Position",
 	 *   description = "Get informations on the all positions of a team",
 	 *   requirements={
 	 *      {
@@ -172,6 +174,7 @@ class PositionController extends Controller
 	 * 
 	 * @ApiDoc(
 	 *   resource = true,
+	 *   section="Position",
 	 *   description = "Get informations on the furthest position of a team",
 	 *   requirements={
 	 *      {
@@ -217,6 +220,7 @@ class PositionController extends Controller
 	 * 
 	 * @ApiDoc(
 	 *   resource = true,
+	 *   section="Position",
 	 *   description = "Add a position",
 	 *   requirements={
 	 *      {
@@ -314,6 +318,7 @@ class PositionController extends Controller
 	/**
      * @ApiDoc(
 	 *   resource = true,
+	 *   section="Position",
 	 *   description = "Delete a position",
 	 *   requirements={
 	 *      {

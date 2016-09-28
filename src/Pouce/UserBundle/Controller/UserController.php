@@ -53,6 +53,7 @@ class UserController extends Controller
 	 * 
 	 * @ApiDoc(
 	 *   resource = true,
+	 *   section="User",
 	 *   description = "Get informations on a User with the id",
 	 *   requirements={
 	 *      {
@@ -93,6 +94,7 @@ class UserController extends Controller
 	/**
 	 * @ApiDoc(
 	 *   resource = true,
+	 *   section="User",
 	 *   description = "Get informations on a User with the first name and the last name",
 	 *   requirements={
 	 *      {
@@ -138,6 +140,7 @@ class UserController extends Controller
 	/**
 	 * @ApiDoc(
 	 *   resource = true,
+	 *   section="User",
 	 *   description = "Get informations on a User with the email",
 	 *   requirements={
 	 *      {
@@ -177,6 +180,7 @@ class UserController extends Controller
 	/**
      * @ApiDoc(
      *   resource = true,
+     *   section="User",
      *   description = "Create new user",
      *   statusCodes={
      *         201="Returned when successful"
@@ -261,6 +265,7 @@ class UserController extends Controller
 	/**
      * @ApiDoc(
 	 *   resource = true,
+	 *   section="User",
 	 *   description = "Delete a User",
 	 *   requirements={
 	 *      {

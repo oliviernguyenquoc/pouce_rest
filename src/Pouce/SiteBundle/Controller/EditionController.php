@@ -21,6 +21,7 @@ class EditionController extends Controller
     /**
      * @ApiDoc(
      *   resource = true,
+     *   section="Edition",
      *   description = "Get informations on a edition",
      *   requirements={
      *      {
