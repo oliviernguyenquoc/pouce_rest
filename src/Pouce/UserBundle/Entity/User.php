@@ -10,6 +10,7 @@ use Doctrine\Common\Collections\ArrayCollection;
 use Symfony\Component\Validator\Constraints as Assert;
 use Symfony\Component\HttpFoundation\File\File;
 use Vich\UploaderBundle\Mapping\Annotation as Vich;
+use JMS\Serializer\Annotation\Groups;
 
 
 /**
@@ -24,25 +25,43 @@ class User extends BaseUser
      * @ORM\Id
      * @ORM\Column(type="integer")
      * @ORM\GeneratedValue(strategy="AUTO")
+     *
+     * @Groups({"user","team"})
+     *
+     * @var integer
      */
     protected $id;
 
     /**
      * @ORM\Column(type="string", nullable=true)
+     * 
      * @Assert\NotBlank(message="Entrez votre prénom.", groups={"updateRegistration"})
+     *
+     * @Groups({"user","team"})
+     *
+     * @var string
      */
     protected $first_name;
 
     /**
      * @ORM\Column(type="string", nullable=true)
      * @Assert\NotBlank(message="Entrez votre nom de famille.", groups={"updateRegistration"})
+     *
+     * @Groups({"user","team"})
+     *
+     * @var string
      */
     protected $last_name;
 
     /**
      * @ORM\Column(type="string", nullable=true)
+     * 
      * @Assert\NotBlank(message="Entrez votre sexe.", groups={"updateRegistration"})
      * @Assert\Choice({"Homme", "Femme"})
+     *
+     * @Groups({"user","team"})
+     *
+     * @var string
      */
     protected $sex;
 
@@ -50,14 +69,23 @@ class User extends BaseUser
      * @ORM\Column(type="string", nullable=true)
      * @Assert\NotBlank(message="Entrez votre promotion.", groups={"updateRegistration"})
      * @Assert\Choice({"Bac +1", "Bac +2", "Bac +3", "Bac +4", "Bac +5", "Bac +6", "Doctorant"})
+     *
+     * @Groups({"user","team"})
+     *
+     * @var string
      */
     protected $promotion;
 
     /**
      * @ORM\Column(type="string", nullable=true)
+     * 
      * @Assert\Regex("/\d+/")
      * @Assert\Length(min=9, max=15, minMessage="Le numéro de téléphone doit avoir 10 chiffres minimum.", maxMessage="Le numéro de téléphone doit avoir 15 chiffres maximum")
      * @Assert\NotBlank(message="Entrez votre numéro de téléphone.", groups={"updateRegistration"})
+     *
+     * @Groups({"user","team"})
+     *
+     * @var string
      */
     protected $telephone;
 

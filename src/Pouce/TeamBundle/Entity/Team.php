@@ -6,6 +6,7 @@ use Gedmo\Mapping\Annotation as Gedmo;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Validator\Constraints as Assert;
 use Doctrine\Common\Collections\ArrayCollection;
+use JMS\Serializer\Annotation\Groups;
 
 /**
  * Team
@@ -16,21 +17,27 @@ use Doctrine\Common\Collections\ArrayCollection;
 class Team
 {
     /**
-     * @var integer
-     *
      * @ORM\Column(name="id", type="integer")
      * @ORM\Id
      * @ORM\GeneratedValue(strategy="AUTO")
+     *
+     * @Groups({"team"})
+     *
+     * @var integer
      */
     private $id;
 
     /**
      * @ORM\ManyToMany(targetEntity="Pouce\UserBundle\Entity\User", inversedBy="teams")
+     *
+     * @Groups({"team"})
     */
     private $users;
 
     /**
      * @ORM\ManyToOne(targetEntity="Pouce\SiteBundle\Entity\Edition", cascade={"persist"})
+     *
+     * @Groups({"team"})
     */
     private $edition;
 
@@ -41,53 +48,65 @@ class Team
 
     /**
      * @ORM\ManyToOne(targetEntity="Pouce\SiteBundle\Entity\City", cascade={"persist"})
+     *
+     * @Groups({"team"})
     */
     private $startCity;
 
     /**
-     * @var string
+     * @ORM\Column(name="teamName", type="string", length=255)
+     * 
      * @Assert\NotBlank()
      * @Assert\NotNull()
      *
-     * @ORM\Column(name="teamName", type="string", length=255)
+     * @Groups({"team"})
+     *
+     * @var string
      */
     private $teamName;
 
     /**
-     * @var string
-     *
      * @ORM\Column(name="comment", type="string", length=500)
+     *
+     * @Groups({"team"})
+     *
+     * @var string
      */
     private $comment;
 
     /**
-     * @var string
+     * @ORM\Column(name="targetDestination", type="string", length=255)
+     * 
      * @Assert\NotBlank()
      *
-     * @ORM\Column(name="targetDestination", type="string", length=255)
+     * @Groups({"team"})
+     *
+     * @var string
      */
     private $targetDestination;
 
     /**
-     * @var boolean
-     * 
      * @ORM\Column(name="finishRegister", type="boolean")
+     *
+     * @var boolean
      */
     private $finishRegister;
 
     /**
-     * @var datetime $created
+     * @ORM\Column(type="datetime")
      *
      * @Gedmo\Timestampable(on="create")
-     * @ORM\Column(type="datetime")
+     * 
+     * @var datetime $created
      */
     private $created;
 
     /**
-     * @var \DateTime $updated
+     * @ORM\Column(type="datetime")
      *
      * @Gedmo\Timestampable(on="update")
-     * @ORM\Column(type="datetime")
+     * 
+     * @var \DateTime $updated
      */
     private $updated;
 

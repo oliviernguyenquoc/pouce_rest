@@ -34,14 +34,15 @@ class TeamControllerTest extends CustomTestCase
         $this->assertEquals(200,$response->getStatusCode());
  
         $content = json_decode($response->getContent(), true);
-        $this->assertArrayHasKey('name', $content);
         $this->assertTrue(isset($content['id']));
+        $this->assertTrue(isset($content['team_name']));
         $this->assertTrue(isset($content['comment']));
-        $this->assertTrue(isset($content['targetDestination']));
-        $this->assertTrue(isset($content['user 1']['id']));
-        $this->assertTrue(isset($content['user 2']['id']));
+        $this->assertTrue(isset($content['target_destination']));
+        $this->assertTrue(isset($content['users'][0]['id']));
+        $this->assertTrue(isset($content['users'][1]['id']));
         $this->assertTrue(isset($content['edition']['id']));
-        $this->assertTrue(isset($content['positions'][0]['id']));
+        $this->assertTrue(isset($content['edition']['date_of_event']));
+        $this->assertTrue(isset($content['edition']['status']));
     }
 
     public function testGetUserLastTeam()
@@ -53,8 +54,15 @@ class TeamControllerTest extends CustomTestCase
         $this->assertEquals(200,$response->getStatusCode());
  
         $content = json_decode($response->getContent(), true);
-        $this->assertArrayHasKey('name', $content);
         $this->assertTrue(isset($content['id']));
+        $this->assertTrue(isset($content['team_name']));
+        $this->assertTrue(isset($content['comment']));
+        $this->assertTrue(isset($content['target_destination']));
+        $this->assertTrue(isset($content['users'][0]['id']));
+        $this->assertTrue(isset($content['users'][1]['id']));
+        $this->assertTrue(isset($content['edition']['id']));
+        $this->assertTrue(isset($content['edition']['date_of_event']));
+        $this->assertTrue(isset($content['edition']['status']));
     }
 
     public function testPostTeam()
@@ -193,8 +201,8 @@ class TeamControllerTest extends CustomTestCase
         $client_2->request('GET', '/api/v1/teams/'.$teamId);
         $team = json_decode($client_2->getResponse()->getContent(), true);
 
-        $this->assertEquals('tryTeam2', $team['name']);
-        $this->assertEquals('tryDestination2', $team['targetDestination']);
+        $this->assertEquals('tryTeam2', $team['team_name']);
+        $this->assertEquals('tryDestination2', $team['target_destination']);
         $this->assertEquals('A Try Comment2', $team['comment']);
 
 

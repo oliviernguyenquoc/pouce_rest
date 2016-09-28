@@ -15,6 +15,8 @@ use FOS\RestBundle\Controller\Annotations\Get;
 use FOS\RestBundle\Controller\Annotations\Post;
 use FOS\RestBundle\Controller\Annotations\Put;
 
+use JMS\Serializer\SerializationContext;
+
 use Pouce\UserBundle\Entity\User;
 use Pouce\TeamBundle\Entity\Team;
 use Pouce\TeamBundle\Form\TeamType;
@@ -22,6 +24,41 @@ use Pouce\TeamBundle\Form\TeamType;
 class TeamController extends Controller
 {
 	/**
+	 * ## Response Example ##
+	 * 
+	 * ```  
+	 *{
+	 *	"id": 3,
+	 *	"users":
+	 *	[
+	 *		{
+	 *			"id": 43
+	 *			"first_name": "Sébastien"
+	 *			"last_name": "Gondron"
+	 *			"sex": "Homme"
+	 *			"promotion": "Bac +4"
+	 *			"telephone": "0685667132"
+	 *		}
+	 *		{
+	 *			"id": 47
+	 *			"first_name": "Camille"
+	 *			"last_name": "BARIZIEN"
+	 *			"sex": "Femme"
+	 *			"promotion": "Bac +4"
+	 *			"telephone": "0650764254"
+	 *		}
+	 *	],
+	 *	"edition": 
+	 *	{
+	 *		"id": 1
+	 *		"date_of_event": "2015-10-03T00:00:00+0200"
+	 *		"status": "finished"
+	 *	},
+	 *	"team_name":"Ing\u00e9nieurs Sur-Mesure",
+	 *	"target_destination":"Bruxelles"
+	 *}
+	 * ```  
+	 *
 	 * @ApiDoc(
 	 *   resource = true,
 	 *   description = "Get informations on a team with the id of a team",
@@ -30,9 +67,18 @@ class TeamController extends Controller
 	 *          "name"="id",
 	 *          "dataType"="integer",
 	 *          "requirement"="\d+",
-	 *          "description"="id of the team"
+	 *          "description"="Team id"
 	 *      }
-	 *   }
+	 *   },
+     *   output={
+     *      "class"="Pouce\TeamBundle\Entity\Team",
+     *      "groups"={"team"},
+     *      "parsers"={"Nelmio\ApiDocBundle\Parser\JmsMetadataParser"},
+     *   },
+     *   statusCodes={
+     *         200="Returned when successful",
+     *         404="Returned when no position have been found"
+     *   }
 	 * )
 	 *
 	 * GET Route annotation
@@ -43,58 +89,39 @@ class TeamController extends Controller
 		$em = $this->getDoctrine()->getManager();
 
 		$team = $em->getRepository('PouceTeamBundle:Team')->findOneBy(array('id' => $id));
+		
 		if(!is_object($team)){
 			throw $this->createNotFoundException();
 		}
-		$users = $team->getUsers();
 
-		$userId1 = $users->get(0)->getId();
-		$userId2 = $users->get(1)->getId();
+		$serializer = $this->container->get('serializer');
+		$teamJSON = $serializer->serialize($team, 'json', SerializationContext::create()->setGroups(array('team')));
 
-		$user1 = $this->forward('PouceUserBundle:User:getUser', array('id' => $userId1), array('_format' => 'json'));
-		$user2 = $this->forward('PouceUserBundle:User:getUser', array('id' => $userId2), array('_format' => 'json'));
-
-		$positions = $this->forward('PouceTeamBundle:Position:getPositions', array('id' => $team->getId()), array('_format' => 'json'));
-
-		$edition = $this->forward('PouceSiteBundle:Edition:getEdition', array('id' => $team->getEdition()->getId()), array('_format' => 'json'));
-
-		$startCity = $team->getStartCity();
-
-		if($startCity != null)
-		{
-			$startCityName = $team->getStartCity()->getName();
-			$startCityLat  = $team->getStartCity()->getLatitude();
-			$startCityLong = $team->getStartCity()->getLongitude();
-		}
-		else
-		{
-			$startCityName = null;
-			$startCityLat  = null;
-			$startCityLong = null;
-		}
-
-		return array(
-			'id'				=> $team->getId(),
-			'name'				=> $team->getTeamName(),
-			'user 1' 			=> json_decode($user1->getContent(), true),
-			'user 2' 			=> json_decode($user2->getContent(), true),
-			'edition'			=> json_decode($edition->getContent(), true),
-			'positions' 		=> json_decode($positions->getContent(), true),
-			'targetDestination'	=> $team->getTargetDestination(),
-			'comment'			=> $team->getComment(),
-			'start_city'		=> $startCityName,
-			'location'	=> array(
-				'lat'		=> $startCityLat,
-				'long'		=> $startCityLong
-				)
-
-		);
+		return new Response($teamJSON,200,['content_type' => 'application/json']);
 	}
 
 	/**
+	 *  ## Input Example ##
+	 * 
+	 * ``` 
+	 *{
+	 *	"teamName":"tryTeam",
+	 *	"targetDestination":"tryDestination",
+	 *	"comment":"A Try Comment",
+	 *	"editionId": 1,
+	 *	"userEmail1": "tryteam1@tryteam.com"
+	 *	"userEmail2": "tryteam2@tryteam.com",
+	 *	"startCity": 2990969
+	 *}
+	 * ```
+	 * 
 	 * @ApiDoc(
 	 *   resource = true,
 	 *   description = "Add a team",
+     *   statusCodes={
+     *         201="Returned when successful",
+     *         400="Returned when a user can't be found or doesn't respect constraints"
+     *   }
 	 * )
 	 *
 	 * POST Route annotation
@@ -222,9 +249,12 @@ class TeamController extends Controller
 	 *          "name"="id",
 	 *          "dataType"="integer",
 	 *          "requirement"="\d+",
-	 *          "description"="id of the team"
+	 *          "description"="Team id"
 	 *      }
-	 *   }
+	 *   },
+     *   statusCodes={
+     *         204="Returned when successful"
+     *   }
 	 * )
 	 *
 	 * DELETE Route annotation
@@ -240,9 +270,30 @@ class TeamController extends Controller
     }
 
 	/**
+	 * ## Input Example ##
+	 * 
+	 * ```  
+	 *{
+	 *	"teamName": "tryTeamUpdate",
+	 *	"targetDestination": "tryDestinationUpdate",
+	 *	"comment":"A Try Comment update"
+	 *}
+	 * ```  
+	 * 
 	 * @ApiDoc(
 	 *   resource = true,
-	 *   description = "Add a team",
+	 *   description = "Update a team",
+	 *   requirements={
+	 *      {
+	 *          "name"="id",
+	 *          "dataType"="integer",
+	 *          "requirement"="\d+",
+	 *          "description"="Team id"
+	 *      }
+	 *   },
+     *   statusCodes={
+     *         200="Returned when successful"
+     *   }
 	 * )
 	 *
 	 * PUT Route annotation
@@ -276,6 +327,41 @@ class TeamController extends Controller
 	}
 
 	/**
+	 * ## Response Example ##
+	 * 
+	 * ```  
+	 *{
+	 *	"id": 3,
+	 *	"users":
+	 *	[
+	 *		{
+	 *			"id": 43
+	 *			"first_name": "Sébastien"
+	 *			"last_name": "Gondron"
+	 *			"sex": "Homme"
+	 *			"promotion": "Bac +4"
+	 *			"telephone": "0685667132"
+	 *		}
+	 *		{
+	 *			"id": 47
+	 *			"first_name": "Camille"
+	 *			"last_name": "BARIZIEN"
+	 *			"sex": "Femme"
+	 *			"promotion": "Bac +4"
+	 *			"telephone": "0650764254"
+	 *		}
+	 *	],
+	 *	"edition": 
+	 *	{
+	 *		"id": 1
+	 *		"date_of_event": "2015-10-03T00:00:00+0200"
+	 *		"status": "finished"
+	 *	},
+	 *	"team_name":"Ing\u00e9nieurs Sur-Mesure",
+	 *	"target_destination":"Bruxelles"
+	 *}
+	 * ```  
+	 * 
 	 * @ApiDoc(
 	 *   resource = true,
 	 *   description = "Get informations on a team with the id of a user",
@@ -284,8 +370,17 @@ class TeamController extends Controller
 	 *          "name"="id",
 	 *          "dataType"="integer",
 	 *          "requirement"="\d+",
-	 *          "description"="id of the user"
+	 *          "description"="User id"
 	 *      }
+	 *   },
+     *   output={
+     *      "class"="Pouce\TeamBundle\Entity\Team",
+     *      "groups"={"team"},
+     *      "parsers"={"Nelmio\ApiDocBundle\Parser\JmsMetadataParser"},
+     *   },
+     *   statusCodes={
+     *         200="Returned when successful",
+     *         404="Returned when no team have been found"
 	 *   }
 	 * )
 	 *
@@ -300,8 +395,9 @@ class TeamController extends Controller
 			throw $this->createNotFoundException();
 		}
 
-		$team = $this->forward('PouceTeamBundle:Team:getTeam', array('id' => $team->getId()), array('_format' => 'json'));
+		$serializer = $this->container->get('serializer');
+		$teamJSON = $serializer->serialize($team, 'json', SerializationContext::create()->setGroups(array('team')));
 
-		return json_decode($team->getContent(), true);
+		return new Response($teamJSON,200,['content_type' => 'application/json']);
 	}
 }

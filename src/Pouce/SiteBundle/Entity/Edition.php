@@ -19,7 +19,7 @@ class Edition
      * @ORM\Id
      * @ORM\GeneratedValue(strategy="AUTO")
      *
-     * @Groups({"edition"})
+     * @Groups({"edition","team"})
      *
      * @var integer
      */
@@ -36,7 +36,7 @@ class Edition
      * @Assert\NotBlank()
      * @Assert\NotNull()
      *
-     * @Groups({"edition"})
+     * @Groups({"edition","team"})
      *
      * @var date
      */
@@ -49,7 +49,7 @@ class Edition
      * @Assert\NotNull()
      * @Assert\Choice({"registering", "finished", "scheduled", "inProgress"})
      *
-     * @Groups({"edition"})
+     * @Groups({"edition","team"})
      *
      * @var string
      */
