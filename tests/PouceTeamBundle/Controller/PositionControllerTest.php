@@ -38,7 +38,7 @@ class PositionControllerTest extends CustomTestcase
         $this->assertTrue(isset($content['city']['id']));
     }
 
-    public function testGetPositionsAction()
+    public function testGetPositionAction()
     {
         $client = $this->createClient();
         $client->request('GET', '/api/v1/teams/4/positions');
@@ -77,21 +77,35 @@ class PositionControllerTest extends CustomTestcase
         $this->assertEquals(201,$response->getStatusCode());
 
         $content = $response->getContent();
-        $this->assertEquals($content,"Result created.");
+        $this->assertEquals($content,"Position created.");
+
+        /* ********* Test to edit position *********** */
+        $client = $this->createClient();
+        $client->request('GET','/api/v1/teams/'.$teamId.'/positions/last');
+        $position = json_decode($client->getResponse()->getContent(), true);
+
+        $data_edit = array(
+            'created'  => '2020-06-05 12:15:00'
+        );
+
+        $client = $this->createClient();
+        $client->request('PUT','/api/v1/teams/'.$teamId.'/positions',array(), array(), array('CONTENT_TYPE' => 'application/json'), json_encode($data));
+
+        $response = $client->getResponse();
+        $this->assertEquals(201,$response->getStatusCode());
+
+        $content = $response->getContent();
+        $this->assertEquals($content,"Position modified.");
 
         /* ********* Test to delete position *********** */
         $client = $this->createClient();
-        $client->request('GET', '/api/v1/teams/'.$teamId.'/positions/last');
-        $positionLast = json_decode($client->getResponse()->getContent(), true);
-
-        $client = $this->createClient();
-        $client->request('DELETE', '/api/v1/positions/'.$positionLast['id']);
+        $client->request('DELETE', '/api/v1/positions/'.$position['id']);
 
         $response = $client->getResponse();
         $this->assertEquals(204,$response->getStatusCode());
 
         $content = $response->getContent();
-        $this->assertEquals($content,"Result deleted.");
+        $this->assertEquals($content,"Position deleted.");
 
         $this->deleteUser('1');
         $this->deleteTeam('1');

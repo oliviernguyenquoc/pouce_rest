@@ -14,6 +14,7 @@ use Nelmio\ApiDocBundle\Annotation\ApiDoc;
 use FOS\RestBundle\Controller\Annotations\Delete;
 use FOS\RestBundle\Controller\Annotations\Get;
 use FOS\RestBundle\Controller\Annotations\Post;
+use FOS\RestBundle\Controller\Annotations\Put;
 
 class PositionController extends Controller
 {
@@ -307,13 +308,70 @@ class PositionController extends Controller
 			// 	}
 			// }
 
-			$response = new Response("Result created.", 201);               
+			$response = new Response("Position created.", 201);               
             return $response;
 		}
 		else {
             return $form;
         }
 	}
+
+	/**
+     * ## Input Example ##
+     * 
+     * ```  
+     *{
+     *  "created": "2011-06-05 12:15:00"
+     *}
+     * ```  
+     * 
+     * @ApiDoc(
+     *   resource = true,
+     *   section="Position",
+     *   description = "Update a edition",
+     *   requirements={
+     *      {
+     *          "name"="id",
+     *          "dataType"="integer",
+     *          "requirement"="yyyy-MM-dd hh:mm:ss",
+     *          "description"="Position id"
+     *      }
+     *   },
+     *   statusCodes={
+     *         200="Returned when successful",
+     *         400="Returned when position is not found"
+     *   }
+     * )
+     *
+     * PUT Route annotation
+     * @Put("/position/{id}")
+     */
+    public function putPositionAction(Request $request)
+    {
+        $em = $this->getDoctrine()->getManager();
+        $position = $em ->getRepository('PouceTeamBundle:Position')->find($request->get('id'));
+
+        if (empty($position)) {
+            throw $this->createNotFoundException();
+        }
+
+        $form = $this->get('form.factory')->create(PositionEditType::class, $position);
+
+        $form->submit($request->request->all());
+
+        if($form->isValid()){
+            //On enregistre la position
+            $em->persist($position);
+            $em->flush();
+
+            $response = new Response("Position modified.", 200);  
+            return $response;
+        }
+        else
+        {
+            return $form;
+        }
+    }
 
 	/**
      * @ApiDoc(
@@ -345,7 +403,7 @@ class PositionController extends Controller
         $em->remove($position);
         $em->flush();
 
-        $response = new Response("Result deleted.", 204);               
+        $response = new Response("Position deleted.", 204);               
         return $response;
     }
 }
