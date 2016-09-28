@@ -21,7 +21,7 @@ class School
      * @ORM\Id
      * @ORM\GeneratedValue(strategy="AUTO")
      *
-     * @Groups({"user"})
+     * @Groups({"school","user"})
      *
      * @var integer
      */
@@ -33,7 +33,7 @@ class School
      * @Assert\NotBlank()
      * @Assert\NotNull()
      *
-     * @Groups({"user"})
+     * @Groups({"school","user"})
      *
      * @var string
      */
@@ -44,7 +44,7 @@ class School
      *
      * @Assert\NotBlank()
      *
-     * @Groups({"user"})
+     * @Groups({"school","user"})
      *
      * @var string
      */
@@ -53,12 +53,16 @@ class School
     /**
      * @ORM\Column(name="address", type="string", length=255, nullable=true)
      *
+     * @Groups({"school"})
+     *
      * @var string
      */
     private $address;
 
     /**
      * @ORM\Column(name="telephone", type="string", length=20, nullable=true)
+     *
+     * @Groups({"school"})
      *
      * @var string
      */
@@ -67,7 +71,7 @@ class School
     /**
      * @ORM\ManyToOne(targetEntity="Pouce\SiteBundle\Entity\City", cascade={"persist"})
      *
-     * @Groups({"user"})
+     * @Groups({"school","user"})
     */
     private $city;
 

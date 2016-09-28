@@ -2,11 +2,16 @@
 
 namespace Pouce\UserBundle\Controller;
 
-use FOS\RestBundle\Controller\Annotations\View;
-use FOS\RestBundle\Controller\Annotations\Get;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\Security\Core\Exception\AccessDeniedException;
+use Symfony\Component\HttpFoundation\Response;
+
 use Nelmio\ApiDocBundle\Annotation\ApiDoc;
+
+use JMS\Serializer\SerializationContext;
+
+use FOS\RestBundle\Controller\Annotations\View;
+use FOS\RestBundle\Controller\Annotations\Get;
 
 class SchoolController extends Controller
 {
@@ -21,7 +26,15 @@ class SchoolController extends Controller
 	 *          "requirement"="\d+",
 	 *          "description"="id of the edition"
 	 *      }
-	 *   }
+	 *   },
+     *   output={
+     *      "class"="Pouce\UserBundle\Entity\School",
+     *      "groups"={"school"},
+     *      "parsers"={"Nelmio\ApiDocBundle\Parser\JmsMetadataParser"},
+     *   },
+     *   statusCodes={
+     *         200="Returned when successful"
+     *   }
 	 * )
 	 *
 	 * GET Route annotation
@@ -35,7 +48,10 @@ class SchoolController extends Controller
         $schools = $repositorySchool->findBy([], ['name' => 'ASC']);
         $schoolsEdition = $edition->getSchools();
 
-        return($schoolsEdition);
+        $serializer = $this->container->get('serializer');
+        $schoolsEditionJSON = $serializer->serialize($schoolsEdition, 'json', SerializationContext::create()->setGroups(array('school')));
+
+        return new Response($schoolsEditionJSON,200,['content_type' => 'application/json']);
 
 	}
 
@@ -50,7 +66,15 @@ class SchoolController extends Controller
 	 *          "requirement"="\d+",
 	 *          "description"="id of the school"
 	 *      }
-	 *   }
+	 *   },
+     *   output={
+     *      "class"="Pouce\UserBundle\Entity\School",
+     *      "groups"={"school"},
+     *      "parsers"={"Nelmio\ApiDocBundle\Parser\JmsMetadataParser"},
+     *   },
+     *   statusCodes={
+     *         200="Returned when successful"
+     *   }
 	 * )
 	 *
 	 * GET Route annotation
@@ -61,17 +85,10 @@ class SchoolController extends Controller
 		$em = $this->getDoctrine()->getManager();
         $school = $em->getRepository('PouceUserBundle:School')->find($id);
 
-        $city =  $this->forward('PouceSiteBundle:City:getCity', array('id' => $school->getCity()->getId()), array('_format' => 'json'));
+		$serializer = $this->container->get('serializer');
+        $school = $serializer->serialize($school, 'json', SerializationContext::create()->setGroups(array('school')));
 
-        return array(
-        	'id'		=> $school->getId(),
-        	'name'		=> $school->getName(),
-        	'sigle'		=> $school->getSigle(),
-        	'address'	=> $school->getAddress(),
-        	'telephone'	=> $school->getTelephone(),
-        	'city'		=> json_decode($city->getContent(), true),
-        	'updated'	=> $school->getUpdated()
-        );
+        return new Response($school,200,['content_type' => 'application/json']);
 
 	}
 

@@ -21,7 +21,7 @@ class City
      * @ORM\Id
      * @ORM\GeneratedValue(strategy="AUTO")
      *
-     * @Groups({"city","position","team","result","user"})
+     * @Groups({"city","position","team","result","user","school"})
      *
      * @var integer
     */
@@ -35,7 +35,7 @@ class City
      * @Assert\NotBlank()
      * @Assert\NotNull()
      *
-     * @Groups({"city","position","team","result","user"})
+     * @Groups({"city","position","team","result","user","school"})
      *
      * @var string
      */
