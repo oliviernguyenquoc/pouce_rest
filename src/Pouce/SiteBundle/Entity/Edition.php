@@ -53,8 +53,6 @@ class Edition
      * 
      * @ORM\Column(name="status", type="string", length=35)
      * 
-     * @Assert\NotBlank()
-     * @Assert\NotNull()
      * @Assert\Choice({"registering", "finished", "scheduled", "inProgress"})
      *
      * @Groups({"edition","team"})

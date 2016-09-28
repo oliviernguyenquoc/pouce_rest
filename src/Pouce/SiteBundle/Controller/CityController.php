@@ -6,9 +6,6 @@ use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 
-use Pouce\SuperAdminBundle\Form\Type\EditionType;
-use Pouce\SuperAdminBundle\Form\Type\EditionEditType;
-
 use Pouce\SiteBundle\Entity\Edition;
 
 use JMS\Serializer\SerializationContext;

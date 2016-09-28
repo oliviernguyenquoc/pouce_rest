@@ -77,19 +77,18 @@ class TeamControllerTest extends CustomTestCase
             'startCity'         => 2990969
         );
         
-        //Test create a team
+        /*****************  Test create a team  *******************/
         $client = $this->createClient();
         $client->request('POST','/api/v1/teams',array(), array(), array('CONTENT_TYPE' => 'application/json'), json_encode($data));
 
         $response = $client->getResponse();
-
         $this->assertEquals(201, $response->getStatusCode());
 
         $content = $response->getContent();
         $this->assertEquals($content,"Team created.");
 
 
-        /**************  Test remove team  **********************/
+        /*****************  Test remove team  ******************/
         $teamId = $this->getTeamId('1');
 
         $client = $this->createClient();
@@ -97,6 +96,9 @@ class TeamControllerTest extends CustomTestCase
 
         $response = $client->getResponse();
         $this->assertEquals(204,$response->getStatusCode());
+
+        $content = $response->getContent();
+        $this->assertEquals($content,"Team deleted.");
     }
 
     /**

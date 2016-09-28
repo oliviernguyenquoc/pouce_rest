@@ -58,10 +58,14 @@ class ResultController extends Controller
 			throw $this->createNotFoundException();
 		}
 
+		dump($result);
+		dump('------------------');
+		dump($result->getPosition()->getDistance());
+
 		$serializer = $this->container->get('serializer');
 		$resultJSON = $serializer->serialize($result, 'json', SerializationContext::create()->setGroups(array('result')));
 
-		return  new Response($resultJSON,200,['content_type' => 'application/json']);
+		return new Response($resultJSON,200,['content_type' => 'application/json']);
 	}
 
 	/**
@@ -101,7 +105,7 @@ class ResultController extends Controller
 			$em->persist($result);
 			$em->flush();
 
-			$response = new Response("Result created.", 201);               
+			$response = new Response("Result created.", 201);
             return $response;
 		}
 		else {
