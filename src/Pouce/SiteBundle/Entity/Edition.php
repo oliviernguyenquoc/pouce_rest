@@ -4,6 +4,7 @@ namespace Pouce\SiteBundle\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Validator\Constraints as Assert;
+use JMS\Serializer\Annotation\Groups;
 
 /**
  * Edition
@@ -14,11 +15,13 @@ use Symfony\Component\Validator\Constraints as Assert;
 class Edition
 {
     /**
-     * @var integer
-     *
      * @ORM\Column(name="id", type="integer")
      * @ORM\Id
      * @ORM\GeneratedValue(strategy="AUTO")
+     *
+     * @Groups({"edition"})
+     *
+     * @var integer
      */
     private $id;
 
@@ -28,21 +31,27 @@ class Edition
     private $schools;
 
     /**
-     * @var date
+     * @ORM\Column(name="dateOfEvent", type="date")
+     * 
      * @Assert\NotBlank()
      * @Assert\NotNull()
      *
-     * @ORM\Column(name="dateOfEvent", type="date")
+     * @Groups({"edition"})
+     *
+     * @var date
      */
     private $dateOfEvent;
 
     /**
-     * @var string
+     * @ORM\Column(name="status", type="string", length=35)
+     * 
      * @Assert\NotBlank()
      * @Assert\NotNull()
      * @Assert\Choice({"registering", "finished", "scheduled", "inProgress"})
      *
-     * @ORM\Column(name="status", type="string", length=35)
+     * @Groups({"edition"})
+     *
+     * @var string
      */
     private $status;
 
