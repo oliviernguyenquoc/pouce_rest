@@ -4,6 +4,7 @@ namespace Pouce\SiteBundle\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Validator\Constraints as Assert;
+use JMS\Serializer\Annotation\Groups;
 
 /**
  * City
@@ -14,60 +15,89 @@ use Symfony\Component\Validator\Constraints as Assert;
 class City
 {
     /**
-     * @var integer
-     *
+     * Id of the city
+     * 
      * @ORM\Column(name="id", type="integer")
      * @ORM\Id
      * @ORM\GeneratedValue(strategy="AUTO")
-     */
+     *
+     * @Groups({"position"})
+     *
+     * @var integer
+    */
     private $id;
 
     /**
-     * @var string
+     * City name
+     * 
+     * @ORM\Column(name="name", type="string", length=35)
+     *
      * @Assert\NotBlank()
      * @Assert\NotNull()
      *
-     * @ORM\Column(name="name", type="string", length=35)     
+     * @Groups({"position"})
+     *
+     * @var string
      */
     private $name;
 
     /**
+     * Country
+     * 
      * @ORM\ManyToOne(targetEntity="Pouce\SiteBundle\Entity\Country", cascade={"persist"})
+     * 
+     * @Groups({"position"})
      */
     private $country;
 
     /**
-     * @var string
+     * Province
+     * 
+     * @ORM\Column(name="province", type="string", length=35, nullable=true)
+     * 
      * @Assert\NotBlank()
      * @Assert\NotNull()
      *
-     * @ORM\Column(name="province", type="string", length=35, nullable=true)          
+     * @var string
      */
     private $province;
 
     /**
-     * @var integer
-     * @Assert\Range(min=0)
+     * Number of people in the city
      *
      * @ORM\Column(name="population", type="integer", nullable=true)
+     * 
+     * @Assert\Range(min=0)
+     *
+     * @var integer
      */
     private $population;
 
     /**
-     * @var float
+     * City longitude
+     * 
+     * @ORM\Column(name="longitude", type="float", nullable=true)
+     * 
      * @Assert\Range(min=-180)
      * @Assert\Range(max=180)
      *
-     * @ORM\Column(name="longitude", type="float", nullable=true)
+     * @Groups({"position"})
+     * 
+     * @var float
      */
     private $longitude;
 
     /**
-     * @var float
+     * City latitude
+     * 
+     * @ORM\Column(name="latitude", type="float", nullable=true)
+     * 
      * @Assert\Range(min=-90)
      * @Assert\Range(max=90)
      *
-     * @ORM\Column(name="latitude", type="float", nullable=true)
+     * @Groups({"position"})
+     *
+     * @var float
      */
     private $latitude;
 

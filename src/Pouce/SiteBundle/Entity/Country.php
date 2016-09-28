@@ -4,6 +4,7 @@ namespace Pouce\SiteBundle\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Validator\Constraints as Assert;
+use JMS\Serializer\Annotation\Groups;
 
 /**
  * Country
@@ -14,62 +15,73 @@ use Symfony\Component\Validator\Constraints as Assert;
 class Country
 {
     /**
-     * @var integer
-     *
+     * Country id
+     * 
      * @ORM\Column(name="id", type="integer")
      * @ORM\Id
      * @ORM\GeneratedValue(strategy="AUTO")
+     *
+     * @var integer
      */
     private $id;
 
     /**
-     * @var string
+     * Country name
+     *
+     * @ORM\Column(name="name", type="string", length=35)
+     * 
      * @Assert\NotBlank()
      * @Assert\NotNull()
      *
-     * @ORM\Column(name="name", type="string", length=35)     
+     * @Groups({"position"})
+     *
+     * @var string
      */
     private $name;
 
     /**
-     * @var string
+     * @ORM\Column(name="code", type="string", length=4)
+     * 
      * @Assert\NotBlank()
      * @Assert\NotNull()
      * @Assert\Country
      *
-     * @ORM\Column(name="code", type="string", length=4)          
+     * @var string
      */
     private $code;
 
     /**
-     * @var string
+     * @ORM\Column(name="capital", type="string", length=35, nullable=true)
+     * 
      * @Assert\NotBlank()
      * @Assert\NotNull()
      *
-     * @ORM\Column(name="capital", type="string", length=35, nullable=true)          
+     * @var string 
      */
     private $capital;
 
     /**
-     * @var string
+     * @ORM\Column(name="province", type="string", length=35, nullable=true)
      *
-     * @ORM\Column(name="province", type="string", length=35, nullable=true)          
+     * @var string 
      */
     private $province;
 
     /**
-     * @var float
+     * @ORM\Column(name="area", type="float", nullable=true)
+     * 
      * @Assert\Range(min=0)
      *
-     * @ORM\Column(name="area", type="float", nullable=true)
+     * @var float
      */
     private $area;
 
     /**
-     * @var integer
+     * @ORM\Column(name="population", type="integer", nullable=true)
+     * 
      * @Assert\Range(min=0)
      *
-     * @ORM\Column(name="population", type="integer", nullable=true)
+     * @var integer
      */
     private $population;
 

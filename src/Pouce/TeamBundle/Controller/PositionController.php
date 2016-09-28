@@ -4,8 +4,11 @@ namespace Pouce\TeamBundle\Controller;
 
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpFoundation\Response;
 
 use Pouce\TeamBundle\Entity\Position;
+
+use JMS\Serializer\SerializationContext;
 
 use Nelmio\ApiDocBundle\Annotation\ApiDoc;
 use FOS\RestBundle\Controller\Annotations\Delete;
@@ -15,6 +18,22 @@ use FOS\RestBundle\Controller\Annotations\Post;
 class PositionController extends Controller
 {
 	/**
+	 * ## Response Example ##
+	 * ```  
+	 *{
+	 *	"id": 701,
+	 *	"distance": 383385,
+	 *	"position": 
+	 *	{
+	 *		"id": 2982652,
+	 *		"city": "Rouen",
+	 *		"country": "France",
+	 *		"latitude": 49.44313,
+	 *		"longitude": 1.09932
+	 *	}
+	 *}
+	 * ```
+	 * 
 	 * @ApiDoc(
 	 *   resource = true,
 	 *   description = "Get informations on the last position of a team",
@@ -23,9 +42,17 @@ class PositionController extends Controller
 	 *          "name"="id",
 	 *          "dataType"="integer",
 	 *          "requirement"="\d+",
-	 *          "description"="id of the team"
+	 *          "description"="Team id"
 	 *      }
-	 *   }
+	 *   },
+     *   output={
+     *      "class"="Pouce\TeamBundle\Entity\Position",
+     *      "groups"={"position"},
+     *      "parsers"={"Nelmio\ApiDocBundle\Parser\JmsMetadataParser"},
+     *   },
+     *   statusCodes={
+     *         200="Returned when successful"
+     *   }
 	 * )
 	 *
 	 * GET Route annotation
@@ -41,25 +68,50 @@ class PositionController extends Controller
 			throw $this->createNotFoundException();
 		}
 
-		$city = $lastPosition->getCity()->getName();
-		$country = $lastPosition->getCity()->getCountry()->getName();
-		$latitude = $lastPosition->getCity()->getLatitude();
-		$longitude = $lastPosition->getCity()->getLongitude();
-		
-		return array(
-			'id'		=> $lastPosition->getId(),
-			'distance'	=> $lastPosition->getDistance(),
-			'position'	=> array(
-				'id'		=> $lastPosition->getCity()->getId(),
-				'city' 		=> $city,
-				'country' 	=> $country,
-				'latitude'	=> $latitude,
-				'longitude'	=> $longitude
-			)
-		);
+		$serializer = $this->container->get('serializer');
+		$lastPositionJSON = $serializer->serialize($lastPosition, 'json', SerializationContext::create()->setGroups(array('position')));
+
+		return new Response($lastPositionJSON,200,['content_type' => 'application/json']);
 	}
 
 	/**
+	 * ### Response example ###
+	 * 
+	 * ```
+	 *{
+	 *	"id": 353
+	 *	"city":
+	 *	{
+	 *		"id": 3037656
+	 *		"name": "Angers"
+	 *		"country":
+	 *		{
+	 *			"name": "France"
+	 *		}
+	 *		"longitude": -0.55
+	 *		"latitude": 47.46667
+	 *	}
+	 *	"distance": 87245
+	 *	"created": "2015-10-03T11:50:52+0200"
+	 *}
+	 *{
+	 *	"id": 375
+	 *	"city":
+	 *	{
+	 *		"id": 3037656
+	 *		"name": "Angers"
+	 *		"country":
+	 *		{
+	 *			"name": "France"
+	 *		}
+	 *		"longitude": -0.55
+	 *		"latitude": 47.46667
+	 *	}
+	 *	"distance": 87245
+	 *	"created": "2015-10-03T12:40:13+0200"
+	 *}
+	 * ```
+	 * 
 	 * @ApiDoc(
 	 *   resource = true,
 	 *   description = "Get informations on the all positions of a team",
@@ -68,9 +120,17 @@ class PositionController extends Controller
 	 *          "name"="id",
 	 *          "dataType"="integer",
 	 *          "requirement"="\d+",
-	 *          "description"="id of the team"
+	 *          "description"="Team id"
 	 *      }
-	 *   }
+	 *   },
+     *   output={
+     *      "class"="Pouce\TeamBundle\Entity\Position",
+     *      "groups"={"position"},
+     *      "parsers"={"Nelmio\ApiDocBundle\Parser\JmsMetadataParser"},
+     *   },
+	 *   statusCodes={
+     *         200="Returned when successful"
+     *   }
 	 * )
 	 *
 	 * GET Route annotation
@@ -80,83 +140,93 @@ class PositionController extends Controller
 		
 		$positions = $this->getDoctrine()->getRepository('PouceTeamBundle:Position')->findAllPositionsByTeam($id);
 
-		$result = array();
-		foreach ($positions as $key => $position) 
-		{
-			array_push($result,
-				array(
-					'id'		=> $position->getId(),
-					'distance'	=> $position->getDistance(),
-					'position'	=> array(
-						'id'		=> $position->getId(),
-						'city' 		=> $position->getCity()->getId(),
-						'city' 		=> $position->getCity()->getName(),
-						'country' 	=> $position->getCity()->getCountry()->getName(),
-						'latitude'	=> $position->getCity()->getLatitude(),
-						'longitude'	=> $position->getCity()->getLongitude(),
-						'timestamp' => $position->getCreated()
-					)
-				)
-			);
-		}
+		$serializer = $this->container->get('serializer');
+		$positionsJSON = $serializer->serialize($positions, 'json', SerializationContext::create()->setGroups(array('position')));
 
-
-		return array_values($result);
-
+		return new Response($positionsJSON,200,['content_type' => 'application/json']);
 	}
 
 	/**
+	 * ## Response Example ##
+	 * ```  
+	 *{
+	 *	"id": 492
+	 *	"city":
+	 *	{
+	 *		"id": 2982652
+	 *		"name": "Rouen"
+	 *		"country":
+	 *		{
+	 *			"name": "France"
+	 *		}
+	 *		"longitude": 1.09932
+	 *		"latitude": 49.44313
+	 *	}
+	 *	"distance": 386330
+	 *	"created": "2015-10-03T17:01:51+0200"
+	 *}
+	 * ```
+	 * 
 	 * @ApiDoc(
 	 *   resource = true,
-	 *   description = "Get informations on important positions of a team",
+	 *   description = "Get informations on the furthest position of a team",
 	 *   requirements={
 	 *      {
 	 *          "name"="id",
 	 *          "dataType"="integer",
 	 *          "requirement"="\d+",
-	 *          "description"="id of the team"
+	 *          "description"="Team id"
 	 *      }
-	 *   }
+	 *   },
+     *   output={
+     *      "class"="Pouce\TeamBundle\Entity\Position",
+     *      "groups"={"position"},
+     *      "parsers"={"Nelmio\ApiDocBundle\Parser\JmsMetadataParser"},
+     *   },
+     *   statusCodes={
+     *         200="Returned when successful"
+     *   }
 	 * )
 	 *
 	 * GET Route annotation
-	 * @Get("/teams/{id}/positions/important")
+	 * @Get("/teams/{id}/positions/furthest")
 	 */
-	public function getImportantPositionsAction($id){
+	public function getFurthestPositionAction($id){
 
 		$em = $this->getDoctrine()->getManager();
-		
-		$positions = $em->getRepository('PouceTeamBundle:Position')->findAllPositionsByTeam($id);
-
-		$count = count($positions);
-
 
 		$positionFuthest =  $em->getRepository('PouceTeamBundle:Position')->findFuthestPosition($id)->getSingleResult();
-		$positionLast = $em->getRepository('PouceTeamBundle:Position')->findLastPosition($id)->getSingleResult();
 
-		return array(
-			'count' 			=> $count,
-			'last_position' 	=> array(
-				'id' 		=> $positionLast->getId(),
-				'city' 		=> $positionLast->getCity()->getName(),
-				'country' 	=> $positionLast->getCity()->getCountry()->getName(),
-				'latitude'	=> $positionLast->getCity()->getLatitude(),
-				'longitude'	=> $positionLast->getCity()->getLongitude()
-			),
-			'furthest_position'	=> array(
-				'id' 		=> $positionFuthest->getId(),
-				'city' 		=> $positionFuthest->getCity()->getName(),
-				'country' 	=> $positionFuthest->getCity()->getCountry()->getName(),
-				'latitude'	=> $positionFuthest->getCity()->getLatitude(),
-				'longitude'	=> $positionFuthest->getCity()->getLongitude()
-			)
-		);
+		$serializer = $this->container->get('serializer');
+		$positionFuthestJSON = $serializer->serialize($positionFuthest, 'json', SerializationContext::create()->setGroups(array('position')));
+
+		return new Response($positionFuthestJSON,200,['content_type' => 'application/json']);
 	}
 
 	/**
+	 * ## Input Example ##
+	 * 
+	 * ```  
+	 *{
+	 *	'city': 2990969
+	 *}
+	 * ```
+	 * 
 	 * @ApiDoc(
 	 *   resource = true,
 	 *   description = "Add a position",
+	 *   requirements={
+	 *      {
+	 *          "name"="id",
+	 *          "dataType"="integer",
+	 *          "requirement"="\d+",
+	 *          "description"="Team id"
+	 *      }
+	 *   },
+     *   statusCodes={
+     *         201="Returned when successful",
+     *         404="Returned when the team is not found"
+     *   }
 	 * )
 	 *
 	 * POST Route annotation
@@ -247,9 +317,12 @@ class PositionController extends Controller
 	 *          "name"="id",
 	 *          "dataType"="integer",
 	 *          "requirement"="\d+",
-	 *          "description"="id of the position"
+	 *          "description"="Position id"
 	 *      }
-	 *   }
+	 *   },
+     *   statusCodes={
+     *         200="Returned when successful"
+     *   }
 	 * )
 	 *
 	 * DELETE Route annotation
@@ -263,5 +336,8 @@ class PositionController extends Controller
 
         $em->remove($position);
         $em->flush();
+
+        $response = new Response("Result deleted.", 204);               
+        return $response;
     }
 }

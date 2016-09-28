@@ -17,26 +17,25 @@ class PositionControllerTest extends CustomTestcase
         $this->assertEquals(200,$response->getStatusCode());
  
         $content = json_decode($response->getContent(), true);
-        $this->assertArrayHasKey('position', $content);
+        $this->assertArrayHasKey('city', $content);
         $this->assertTrue(isset($content['id']));
         $this->assertTrue(isset($content['distance']));
-        $this->assertTrue(isset($content['position']['id']));
+        $this->assertTrue(isset($content['city']['id']));
     }
 
-    public function testGetImportantPositionsAction()
+    public function testGetFurthestPositionAction()
     {
     	$client = $this->createClient();
-        $client->request('GET', '/api/v1/teams/4/positions/important');
+        $client->request('GET', '/api/v1/teams/4/positions/furthest');
 
         $response = $client->getResponse();
         $this->assertEquals(200,$response->getStatusCode());
  
         $content = json_decode($response->getContent(), true);
-        $this->assertTrue(isset($content['count']));
-        $this->assertTrue(isset($content['last_position']));
-        $this->assertTrue(isset($content['last_position']['id']));
-        $this->assertTrue(isset($content['furthest_position']));
-        $this->assertTrue(isset($content['furthest_position']['id']));
+        $this->assertArrayHasKey('city', $content);
+        $this->assertTrue(isset($content['id']));
+        $this->assertTrue(isset($content['distance']));
+        $this->assertTrue(isset($content['city']['id']));
     }
 
     public function testGetPositionsAction()
@@ -50,11 +49,13 @@ class PositionControllerTest extends CustomTestcase
         $content = json_decode($response->getContent(), true);
 
         $this->assertGreaterThanOrEqual(1, count($content));
-        $this->assertArrayHasKey('position', $content[0]);
+        $this->assertArrayHasKey('city', $content[0]);
         $this->assertTrue(isset($content[0]['id']));
         $this->assertTrue(isset($content[0]['distance']));
-        $this->assertTrue(isset($content[0]['position']['id']));
-        $this->assertTrue(isset($content[0]['position']['city']));
+        $this->assertTrue(isset($content[0]['city']['id']));
+        $this->assertTrue(isset($content[0]['city']['longitude']));
+        $this->assertTrue(isset($content[0]['city']['name']));
+        $this->assertTrue(isset($content[0]['city']['country']['name']));
     }
 
     public function postPositionAction()
@@ -75,6 +76,9 @@ class PositionControllerTest extends CustomTestcase
         $response = $client->getResponse();
         $this->assertEquals(201,$response->getStatusCode());
 
+        $content = $response->getContent();
+        $this->assertEquals($content,"Result created.");
+
         /* ********* Test to delete position *********** */
         $client = $this->createClient();
         $client->request('GET', '/api/v1/teams/'.$teamId.'/positions/last');
@@ -85,6 +89,9 @@ class PositionControllerTest extends CustomTestcase
 
         $response = $client->getResponse();
         $this->assertEquals(204,$response->getStatusCode());
+
+        $content = $response->getContent();
+        $this->assertEquals($content,"Result deleted.");
 
         $this->deleteUser('1');
         $this->deleteTeam('1');

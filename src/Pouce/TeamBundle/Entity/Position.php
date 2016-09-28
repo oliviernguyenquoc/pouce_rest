@@ -4,6 +4,7 @@ namespace Pouce\TeamBundle\Entity;
 
 use Gedmo\Mapping\Annotation as Gedmo;
 use Doctrine\ORM\Mapping as ORM;
+use JMS\Serializer\Annotation\Groups;
 
 /**
  * Position
@@ -14,46 +15,64 @@ use Doctrine\ORM\Mapping as ORM;
 class Position
 {
     /**
-     * @var integer
+     * Position id
      *
      * @ORM\Column(name="id", type="integer")
      * @ORM\Id
      * @ORM\GeneratedValue(strategy="AUTO")
+     * 
+     * @Groups({"position"})
+     *
+     * @var integer
      */
     private $id;
 
     /**
+     * City of the position
+     * 
      * @ORM\ManyToOne(targetEntity="Pouce\SiteBundle\Entity\City")
      * @ORM\JoinColumn(nullable=true)
+     * 
+     * @Groups({"position"})
     */
     private $city;
 
     /**
-     * @var float
+     * Distance between departure of the team and the position
      *
      * @ORM\Column(name="distance", type="float", nullable=true)
+     *
+     * @Groups({"position"})
+     *
+     * @var float
      */
     private $distance;
 
     /**
+     * Team who own the position
+     * 
      * @ORM\ManyToOne(targetEntity="Pouce\TeamBundle\Entity\Team")
      * @ORM\JoinColumn(nullable=false)
     */
     private $team;
 
     /**
-     * @var datetime $created
-     *
+     * Datetime when the position have been registered
+     * 
      * @Gedmo\Timestampable(on="create")
      * @ORM\Column(type="datetime")
+     *
+     * @Groups({"position"})
+     *
+     * @var datetime $created
      */
     private $created;
 
     /**
-     * @var \DateTime $updated
-     *
      * @Gedmo\Timestampable(on="update")
      * @ORM\Column(type="datetime")
+     *
+     * @var \DateTime $updated
      */
     private $updated;
 
