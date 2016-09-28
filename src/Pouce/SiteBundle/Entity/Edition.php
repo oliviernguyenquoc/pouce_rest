@@ -15,6 +15,8 @@ use JMS\Serializer\Annotation\Groups;
 class Edition
 {
     /**
+     * Edition id
+     * 
      * @ORM\Column(name="id", type="integer")
      * @ORM\Id
      * @ORM\GeneratedValue(strategy="AUTO")
@@ -26,11 +28,15 @@ class Edition
     private $id;
 
     /**
+     * Schools which participate to edition
+     * 
      * @ORM\ManyToMany(targetEntity="Pouce\UserBundle\Entity\School", mappedBy="editions")
      */
     private $schools;
 
     /**
+     * First day of the edition
+     * 
      * @ORM\Column(name="dateOfEvent", type="date")
      * 
      * @Assert\NotBlank()
@@ -43,6 +49,8 @@ class Edition
     private $dateOfEvent;
 
     /**
+     * Edition status (registering, finished, scheduled or inProgress)
+     * 
      * @ORM\Column(name="status", type="string", length=35)
      * 
      * @Assert\NotBlank()

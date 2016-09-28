@@ -17,6 +17,8 @@ use JMS\Serializer\Annotation\Groups;
 class School
 {
     /**
+     * School id
+     * 
      * @ORM\Column(name="id", type="integer")
      * @ORM\Id
      * @ORM\GeneratedValue(strategy="AUTO")
@@ -28,6 +30,8 @@ class School
     private $id;
 
     /**
+     * School name
+     * 
      * @ORM\Column(name="name", type="string", length=255)
      * 
      * @Assert\NotBlank()
@@ -40,6 +44,8 @@ class School
     private $name;
 
     /**
+     * School initials
+     * 
      * @ORM\Column(name="sigle", type="string", length=10, nullable=true)
      *
      * @Assert\NotBlank()
@@ -51,6 +57,8 @@ class School
     private $sigle;
 
     /**
+     * School address
+     * 
      * @ORM\Column(name="address", type="string", length=255, nullable=true)
      *
      * @Groups({"school"})
@@ -60,6 +68,8 @@ class School
     private $address;
 
     /**
+     * School telephone
+     * 
      * @ORM\Column(name="telephone", type="string", length=20, nullable=true)
      *
      * @Groups({"school"})
@@ -69,6 +79,8 @@ class School
     private $telephone;
 
     /**
+     * City where the school is based
+     * 
      * @ORM\ManyToOne(targetEntity="Pouce\SiteBundle\Entity\City", cascade={"persist"})
      *
      * @Groups({"school","user"})
@@ -76,6 +88,8 @@ class School
     private $city;
 
     /**
+     * Editions in which the school participate
+     * 
      * @ORM\ManyToMany(targetEntity="Pouce\SiteBundle\Entity\Edition", inversedBy="schools")
      */
     private $editions;

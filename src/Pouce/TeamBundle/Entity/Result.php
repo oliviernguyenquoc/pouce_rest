@@ -14,6 +14,8 @@ use JMS\Serializer\Annotation\Groups;
 class Result
 {
     /**
+     * Result id
+     * 
      * @ORM\Column(name="id", type="integer")
      * @ORM\Id
      * @ORM\GeneratedValue(strategy="AUTO")
@@ -25,16 +27,22 @@ class Result
     private $id;
 
     /**
+     * Team who belongs the result
+     * 
      * @ORM\OneToOne(targetEntity="Pouce\TeamBundle\Entity\Team", inversedBy="result")
     */
     private $team;
 
     /**
+     * Story of the team, attach with the result
+     * 
      * @ORM\OneToOne(targetEntity="Pouce\TeamBundle\Entity\Comment", cascade={"remove", "persist"})
      */
     private $comment;
 
     /**
+     * Number of hour of lateness at the end of the contest
+     * 
      * @ORM\Column(name="lateness", type="integer")
      *
      * @Groups({"result"})
@@ -44,6 +52,8 @@ class Result
     private $lateness;
 
     /**
+     * Boolean that says if the team comes back in car
+     * 
      * @ORM\Column(name="isValid", type="boolean")
      *
      * Groups({"result"})
@@ -53,6 +63,8 @@ class Result
     private $isValid;
 
     /**
+     * Number of car taken
+     * 
      * @ORM\Column(name="nbCar", type="integer", nullable=true)
      *
      * Groups({"result"})
@@ -63,6 +75,8 @@ class Result
 
 
     /**
+     * Comment about the contest, the staff ...
+     * 
      * @ORM\Column(name="avis", type="text", nullable=true)
      *
      * Groups({"result"})
@@ -77,6 +91,8 @@ class Result
     private $sponsort;
 
     /**
+     * The farthest position of the team
+     * 
      * @ORM\OneToOne(targetEntity="Pouce\TeamBundle\Entity\Position", cascade={"persist"})
      * @ORM\JoinColumn(nullable=false)
      *
@@ -85,6 +101,8 @@ class Result
     private $position;
 
     /**
+     * Rank of the team in the edition (link with the team)
+     * 
      * @ORM\Column(name="rank", type="integer")
      *
      * Groups({"result"})

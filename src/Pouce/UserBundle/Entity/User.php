@@ -22,6 +22,8 @@ use JMS\Serializer\Annotation\Groups;
 class User extends BaseUser
 {
     /**
+     * User id
+     * 
      * @ORM\Id
      * @ORM\Column(type="integer")
      * @ORM\GeneratedValue(strategy="AUTO")
@@ -33,6 +35,8 @@ class User extends BaseUser
     protected $id;
 
     /**
+     * User first name
+     * 
      * @ORM\Column(type="string", nullable=true)
      * 
      * @Assert\NotBlank(message="Entrez votre prénom.", groups={"updateRegistration"})
@@ -44,6 +48,8 @@ class User extends BaseUser
     protected $first_name;
 
     /**
+     * User second name
+     * 
      * @ORM\Column(type="string", nullable=true)
      * @Assert\NotBlank(message="Entrez votre nom de famille.", groups={"updateRegistration"})
      *
@@ -54,6 +60,8 @@ class User extends BaseUser
     protected $last_name;
 
     /**
+     * User sex
+     * 
      * @ORM\Column(type="string", nullable=true)
      * 
      * @Assert\NotBlank(message="Entrez votre sexe.", groups={"updateRegistration"})
@@ -66,6 +74,8 @@ class User extends BaseUser
     protected $sex;
 
     /**
+     * User year of school
+     * 
      * @ORM\Column(type="string", nullable=true)
      * @Assert\NotBlank(message="Entrez votre promotion.", groups={"updateRegistration"})
      * @Assert\Choice({"Bac +1", "Bac +2", "Bac +3", "Bac +4", "Bac +5", "Bac +6", "Doctorant"})
@@ -77,6 +87,8 @@ class User extends BaseUser
     protected $promotion;
 
     /**
+     * User telephone
+     * 
      * @ORM\Column(type="string", nullable=true)
      * 
      * @Assert\Regex("/\d+/")

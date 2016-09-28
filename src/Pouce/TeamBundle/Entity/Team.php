@@ -17,6 +17,8 @@ use JMS\Serializer\Annotation\Groups;
 class Team
 {
     /**
+     * Team id
+     * 
      * @ORM\Column(name="id", type="integer")
      * @ORM\Id
      * @ORM\GeneratedValue(strategy="AUTO")
@@ -28,6 +30,8 @@ class Team
     private $id;
 
     /**
+     * The 2 users in the team
+     * 
      * @ORM\ManyToMany(targetEntity="Pouce\UserBundle\Entity\User", inversedBy="teams")
      *
      * @Groups({"team"})
@@ -35,6 +39,8 @@ class Team
     private $users;
 
     /**
+     * Edition in which the team participate
+     * 
      * @ORM\ManyToOne(targetEntity="Pouce\SiteBundle\Entity\Edition", cascade={"persist"})
      *
      * @Groups({"team"})
@@ -42,11 +48,15 @@ class Team
     private $edition;
 
     /**
+     * Result of the team at the edition
+     * 
      * @ORM\OneToOne(targetEntity="Pouce\TeamBundle\Entity\Result", mappedBy="team", cascade={"remove"})
     */
     private $result;
 
     /**
+     * Where the team have started
+     * 
      * @ORM\ManyToOne(targetEntity="Pouce\SiteBundle\Entity\City", cascade={"persist"})
      *
      * @Groups({"team"})
@@ -54,6 +64,8 @@ class Team
     private $startCity;
 
     /**
+     * Team's name
+     * 
      * @ORM\Column(name="teamName", type="string", length=255)
      * 
      * @Assert\NotBlank()
@@ -66,6 +78,8 @@ class Team
     private $teamName;
 
     /**
+     * A litle word before begining the contest
+     * 
      * @ORM\Column(name="comment", type="string", length=500)
      *
      * @Groups({"team"})
@@ -75,6 +89,8 @@ class Team
     private $comment;
 
     /**
+     * Where the team wants to go (before the contest)
+     * 
      * @ORM\Column(name="targetDestination", type="string", length=255)
      * 
      * @Assert\NotBlank()
@@ -86,6 +102,8 @@ class Team
     private $targetDestination;
 
     /**
+     * Have the team have finished their registering ?
+     * 
      * @ORM\Column(name="finishRegister", type="boolean")
      *
      * @var boolean
