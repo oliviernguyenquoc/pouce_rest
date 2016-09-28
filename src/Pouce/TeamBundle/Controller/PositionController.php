@@ -51,7 +51,8 @@ class PositionController extends Controller
      *      "parsers"={"Nelmio\ApiDocBundle\Parser\JmsMetadataParser"},
      *   },
      *   statusCodes={
-     *         200="Returned when successful"
+     *         200="Returned when successful",
+     *         404="Returned when no position have been found"
      *   }
 	 * )
 	 *
@@ -321,7 +322,7 @@ class PositionController extends Controller
 	 *      }
 	 *   },
      *   statusCodes={
-     *         200="Returned when successful"
+     *         204="Returned when successful"
      *   }
 	 * )
 	 *

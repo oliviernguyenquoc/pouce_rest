@@ -21,7 +21,7 @@ class City
      * @ORM\Id
      * @ORM\GeneratedValue(strategy="AUTO")
      *
-     * @Groups({"position"})
+     * @Groups({"position","city"})
      *
      * @var integer
     */
@@ -35,7 +35,7 @@ class City
      * @Assert\NotBlank()
      * @Assert\NotNull()
      *
-     * @Groups({"position"})
+     * @Groups({"position","city"})
      *
      * @var string
      */
@@ -46,7 +46,7 @@ class City
      * 
      * @ORM\ManyToOne(targetEntity="Pouce\SiteBundle\Entity\Country", cascade={"persist"})
      * 
-     * @Groups({"position"})
+     * @Groups({"position","city"})
      */
     private $country;
 
@@ -69,6 +69,8 @@ class City
      * 
      * @Assert\Range(min=0)
      *
+     * @Groups({"city"})
+     *
      * @var integer
      */
     private $population;
@@ -81,7 +83,7 @@ class City
      * @Assert\Range(min=-180)
      * @Assert\Range(max=180)
      *
-     * @Groups({"position"})
+     * @Groups({"position","city"})
      * 
      * @var float
      */
@@ -95,7 +97,7 @@ class City
      * @Assert\Range(min=-90)
      * @Assert\Range(max=90)
      *
-     * @Groups({"position"})
+     * @Groups({"position","city"})
      *
      * @var float
      */

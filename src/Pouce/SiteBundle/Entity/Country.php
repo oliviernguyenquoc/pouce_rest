@@ -21,6 +21,8 @@ class Country
      * @ORM\Id
      * @ORM\GeneratedValue(strategy="AUTO")
      *
+     * @Groups({"city"})
+     *
      * @var integer
      */
     private $id;
@@ -33,7 +35,7 @@ class Country
      * @Assert\NotBlank()
      * @Assert\NotNull()
      *
-     * @Groups({"position"})
+     * @Groups({"position","city"})
      *
      * @var string
      */

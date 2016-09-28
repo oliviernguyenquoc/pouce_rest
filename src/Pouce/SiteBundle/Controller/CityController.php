@@ -4,11 +4,14 @@ namespace Pouce\SiteBundle\Controller;
 
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpFoundation\Response;
 
 use Pouce\SuperAdminBundle\Form\Type\EditionType;
 use Pouce\SuperAdminBundle\Form\Type\EditionEditType;
 
 use Pouce\SiteBundle\Entity\Edition;
+
+use JMS\Serializer\SerializationContext;
 
 use Nelmio\ApiDocBundle\Annotation\ApiDoc;
 use FOS\RestBundle\Controller\Annotations\Get;
@@ -25,7 +28,15 @@ class CityController extends Controller
      *          "dataType"="integer",
      *          "requirement"="\d+",
      *          "description"="id of the city"
-     *      }
+     *      },
+     *   },
+     *   output={
+     *      "class"="Pouce\SiteBundle\Entity\City",
+     *      "groups"={"city"},
+     *      "parsers"={"Nelmio\ApiDocBundle\Parser\JmsMetadataParser"},
+     *   },
+     *   statusCodes={
+     *         200="Returned when successful"
      *   }
      * )
      *
@@ -39,17 +50,9 @@ class CityController extends Controller
 
         $city = $em->getRepository('PouceSiteBundle:City')->findOneBy(array('id' => $id));
 
-        return array(
-            'id'            => $city->getId(),
-            'name'          => $city->getName(),
-            'country'       => array(
-                'id'        => $city->getCountry()->getId(),
-                'name'      => $city->getCountry()->getName(),
-                'province'  => $city->getCountry()->getProvince()
-            ),
-            'population'    => $city->getPopulation(),
-            'longitude'     => $city->getLongitude(),
-            'latitude'      => $city->getLatitude()
-        );
+        $serializer = $this->container->get('serializer');
+        $cityJSON = $serializer->serialize($city, 'json', SerializationContext::create()->setGroups(array('position')));
+
+        return new Response($cityJSON,200,['content_type' => 'application/json']);
     }
 }
