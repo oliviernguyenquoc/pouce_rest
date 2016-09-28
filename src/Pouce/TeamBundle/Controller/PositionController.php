@@ -19,6 +19,7 @@ class PositionController extends Controller
 {
 	/**
 	 * ## Response Example ##
+	 * 
 	 * ```  
 	 *{
 	 *	"id": 701,

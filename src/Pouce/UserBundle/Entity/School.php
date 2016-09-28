@@ -5,6 +5,7 @@ namespace Pouce\UserBundle\Entity;
 use Gedmo\Mapping\Annotation as Gedmo;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Validator\Constraints as Assert;
+use JMS\Serializer\Annotation\Groups;
 
 /**
  * School
@@ -16,47 +17,57 @@ use Symfony\Component\Validator\Constraints as Assert;
 class School
 {
     /**
-     * @var integer
-     *
      * @ORM\Column(name="id", type="integer")
      * @ORM\Id
      * @ORM\GeneratedValue(strategy="AUTO")
+     *
+     * @Groups({"user"})
+     *
+     * @var integer
      */
     private $id;
 
     /**
-     * @var string
+     * @ORM\Column(name="name", type="string", length=255)
+     * 
      * @Assert\NotBlank()
      * @Assert\NotNull()
      *
-     * @ORM\Column(name="name", type="string", length=255)
+     * @Groups({"user"})
+     *
+     * @var string
      */
     private $name;
 
     /**
-     * @var string
+     * @ORM\Column(name="sigle", type="string", length=10, nullable=true)
+     *
      * @Assert\NotBlank()
      *
-     * @ORM\Column(name="sigle", type="string", length=10, nullable=true)
+     * @Groups({"user"})
+     *
+     * @var string
      */
     private $sigle;
 
     /**
-     * @var string
-     *
      * @ORM\Column(name="address", type="string", length=255, nullable=true)
+     *
+     * @var string
      */
     private $address;
 
     /**
-     * @var string
-     *
      * @ORM\Column(name="telephone", type="string", length=20, nullable=true)
+     *
+     * @var string
      */
     private $telephone;
 
     /**
      * @ORM\ManyToOne(targetEntity="Pouce\SiteBundle\Entity\City", cascade={"persist"})
+     *
+     * @Groups({"user"})
     */
     private $city;
 

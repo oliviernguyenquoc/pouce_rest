@@ -21,7 +21,7 @@ class Position
      * @ORM\Id
      * @ORM\GeneratedValue(strategy="AUTO")
      * 
-     * @Groups({"position"})
+     * @Groups({"position","team"})
      *
      * @var integer
      */
@@ -33,7 +33,7 @@ class Position
      * @ORM\ManyToOne(targetEntity="Pouce\SiteBundle\Entity\City")
      * @ORM\JoinColumn(nullable=true)
      * 
-     * @Groups({"position"})
+     * @Groups({"position","team"})
     */
     private $city;
 
@@ -42,7 +42,7 @@ class Position
      *
      * @ORM\Column(name="distance", type="float", nullable=true)
      *
-     * @Groups({"position"})
+     * @Groups({"position","team"})
      *
      * @var float
      */

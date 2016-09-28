@@ -65,7 +65,8 @@ class UserControllerTest extends WebTestCase
         $this->assertTrue(isset($content['id']));
         $this->assertTrue(isset($content['first_name']));
         $this->assertTrue(isset($content['school']['id']));
-        $this->assertTrue(isset($content['school']['location']['lat']));
+        $this->assertTrue(isset($content['school']['name']));
+        $this->assertTrue(isset($content['school']['city']['name']));
     }
 
     public function testGetUserByFirstNameAndLastName()
@@ -80,7 +81,8 @@ class UserControllerTest extends WebTestCase
         $this->assertTrue(isset($content['id']));
         $this->assertTrue(isset($content['first_name']));
         $this->assertTrue(isset($content['school']['id']));
-        $this->assertTrue(isset($content['school']['location']['lat']));
+        $this->assertTrue(isset($content['school']['name']));
+        $this->assertTrue(isset($content['school']['city']['name']));
     }
 
     public function testGetUserByEmail()
@@ -95,7 +97,8 @@ class UserControllerTest extends WebTestCase
         $this->assertTrue(isset($content['id']));
         $this->assertTrue(isset($content['first_name']));
         $this->assertTrue(isset($content['school']['id']));
-        $this->assertTrue(isset($content['school']['location']['lat']));
+        $this->assertTrue(isset($content['school']['name']));
+        $this->assertTrue(isset($content['school']['city']['name']));
     }
 
     public function testRemoveUser()

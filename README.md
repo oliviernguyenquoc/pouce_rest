@@ -18,6 +18,7 @@ Repository for the symfony version of restful service for Pouce d'Or Website : w
 
 * Add REST functions
 * Add security layer with user roles
+* Fix results
 
 ## The project
 

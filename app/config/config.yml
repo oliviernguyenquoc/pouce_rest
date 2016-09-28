@@ -129,8 +129,8 @@ fos_rest:
 jms_serializer:
     metadata:
         directories:
-            FOSUB:
+            FOSUserBundle:
                 namespace_prefix: "FOS\\UserBundle"
-                path: "%kernel.root_dir%/serializer/FOSUserBundle"
+                path: "@PouceUserBundle/Resources/config/serializer"
 
 nelmio_api_doc: ~

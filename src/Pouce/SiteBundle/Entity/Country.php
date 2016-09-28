@@ -35,7 +35,7 @@ class Country
      * @Assert\NotBlank()
      * @Assert\NotNull()
      *
-     * @Groups({"position","city"})
+     * @Groups({"position","city","result"})
      *
      * @var string
      */

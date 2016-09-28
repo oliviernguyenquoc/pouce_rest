@@ -2,12 +2,14 @@
 
 namespace Pouce\TeamBundle\Controller;
 
+use Symfony\Bundle\FrameworkBundle\Controller\Controller;
+use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpFoundation\Response;
+
 use Pouce\TeamBundle\Form\ResultType;
 use Pouce\TeamBundle\Entity\Result;
 
-use Symfony\Bundle\FrameworkBundle\Controller\Controller;
-use Symfony\Component\HttpFoundation\Request;
-use Doctrine\ORM\NoResultException;
+use JMS\Serializer\SerializationContext;
 
 use Nelmio\ApiDocBundle\Annotation\ApiDoc;
 use FOS\RestBundle\Controller\Annotations\Get;
@@ -27,9 +29,18 @@ class ResultController extends Controller
 	 *          "name"="id",
 	 *          "dataType"="integer",
 	 *          "requirement"="\d+",
-	 *          "description"="id of the team"
+	 *          "description"="Team id"
 	 *      }
-	 *   }
+	 *   },
+     *   output={
+     *      "class"="Pouce\TeamBundle\Entity\Result",
+     *      "groups"={"result"},
+     *      "parsers"={"Nelmio\ApiDocBundle\Parser\JmsMetadataParser"},
+     *   },
+     *   statusCodes={
+     *         200="Returned when successful",
+     *         404="Returned when no result have been found"
+     *   }
 	 * )
 	 *
 	 * GET Route annotation
@@ -40,46 +51,25 @@ class ResultController extends Controller
 	{
 		$em = $this->getDoctrine()->getManager();
 
-		$repositoryResult = $em->getRepository('PouceTeamBundle:Result');
+		$result = $em->getRepository('PouceTeamBundle:Result')->findOneByTeam($id);
 
-		$result = $repositoryResult->findOneByTeam($id);
-		// $comment = $result->getComment();
+		if(!is_object($result)){
+			throw $this->createNotFoundException();
+		}
 
-		$team = $this->forward('PouceTeamBundle:Team:getTeam', array('id' => $id), array('_format' => 'json'));
+		$serializer = $this->container->get('serializer');
+		$resultJSON = $serializer->serialize($result, 'json', SerializationContext::create()->setGroups(array('result')));
 
-		// // create a converter object and handle the input
-		// $converter = new Converter();
-		// if($comment!=NULL){
-		// 	$html = $converter->toHtml($comment->getBlock());			
-		// }
-		// else{
-		// 	$html = NULL;
-		// }
-
-		$positionFuthest = $result->getPosition();
-
-		return  array(
-			// 'comment'	=> $html,
-			'id' 				=> $result->getId(),
-			'lateness'			=> $result->getLateness(),
-			'isValid'			=> $result->getIsValid(),
-			'nbCar'				=> $result->getNbCar(),
-			'avis'				=> $result->getAvis(),
-			'furthest position' => array(
-				'id' 		=> $positionFuthest->getId(),
-				'city' 		=> $positionFuthest->getCity()->getName(),
-				'country' 	=> $positionFuthest->getCity()->getCountry()->getName(),
-				'latitude'	=> $positionFuthest->getCity()->getLatitude(),
-				'longitude'	=> $positionFuthest->getCity()->getLongitude()
-			),
-			'rank'				=> $result->getRank(),
-		);	
+		return  new Response($resultJSON,200,['content_type' => 'application/json']);
 	}
 
 	/**
 	 * @ApiDoc(
 	 *   resource = true,
 	 *   description = "Add a result",
+     *   statusCodes={
+     *         201="Returned when successful"
+     *   }
 	 * )
 	 *
 	 * POST Route annotation

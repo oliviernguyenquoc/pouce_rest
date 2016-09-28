@@ -15,6 +15,8 @@ use FOS\UserBundle\Event\FormEvent;
 use FOS\UserBundle\Event\FilterUserResponseEvent;
 use FOS\UserBundle\Controller\RegistrationController as BaseController;
 
+use JMS\Serializer\SerializationContext;
+
 use Nelmio\ApiDocBundle\Annotation\ApiDoc;
 use FOS\RestBundle\Controller\Annotations\Get;
 use FOS\RestBundle\Controller\Annotations\Post;
@@ -24,6 +26,31 @@ use FOS\RestBundle\View\View;
 class UserController extends Controller
 {
 	/**
+	 * ## Response Example ##
+	 *
+	 * ```
+	 *{
+	 *	"email": "oliv.nguyen@hotmail.fr"
+	 *	"id": 18
+	 *	"first_name": "Olivier"
+	 *	"last_name": "Nguyen"
+	 *	"sex": "Homme"
+	 *	"promotion": "Bac +5"
+	 *	"telephone": "0659277852"
+	 *	"school": 
+	 *	{
+	 *		"id": 1
+	 *		"name": "Ecole Centrale de Nantes"
+	 *		"sigle": "ECN"
+	 *		"city":
+	 *		{
+	 *			"id": 2990969
+	 *			"name": "Nantes"
+	 *		}
+	 *	}
+	 *}
+	 * ```
+	 * 
 	 * @ApiDoc(
 	 *   resource = true,
 	 *   description = "Get informations on a User with the id",
@@ -32,9 +59,18 @@ class UserController extends Controller
 	 *          "name"="id",
 	 *          "dataType"="integer",
 	 *          "requirement"="\d+",
-	 *          "description"="id of the user"
+	 *          "description"="User id"
 	 *      }
-	 *   }
+	 *   },
+     *   output={
+     *      "class"="Pouce\UserBundle\Entity\User",
+     *      "groups"={"user"},
+     *      "parsers"={"Nelmio\ApiDocBundle\Parser\JmsMetadataParser"},
+     *   },
+     *   statusCodes={
+     *         200="Returned when successful",
+     *         404="Returned when no position have been found"
+     *   }
 	 * )
 	 *
 	 * GET Route annotation
@@ -42,29 +78,15 @@ class UserController extends Controller
 	 */
 	public function getUserAction($id){
 		$user = $this->getDoctrine()->getRepository('PouceUserBundle:User')->findOneBy(array('id' => $id));
+		
 		if(!is_object($user)){
 			throw $this->createNotFoundException();
 		}
 
-		return array(
-			'id'			=> $user->getId(),
-			'first_name' 	=> $user->getFirstName(),
-			'last_name' 	=> $user->getLastName(),
-			'sex'			=> $user->getSex(),
-			'promotion'		=> $user->getPromotion(),
-			'telephone' 	=> $user->getTelephone(),
-			'school' 		=> array(
-				'id'		=> $user->getSchool()->getId(),
-				'name' 		=> $user->getSchool()->getName(),
-				'sigle'		=> $user->getSchool()->getSigle(),
-				'address'	=> $user->getSchool()->getAddress(),
-				'city'		=> $user->getSchool()->getCity()->getName(),
-				'location'	=> array(
-					'lat'		=> $user->getSchool()->getCity()->getLatitude(),
-					'long'		=> $user->getSchool()->getCity()->getLongitude()
-					)
-			)
-		);
+		$serializer = $this->container->get('serializer');
+		$userJSON = $serializer->serialize($user, 'json', SerializationContext::create()->setGroups(array('user')));
+
+		return new Response($userJSON,200,['content_type' => 'application/json']);
 	}
 
 
@@ -85,7 +107,16 @@ class UserController extends Controller
 	 *          "requirement"="\d+",
 	 *          "description"="last_name of the user"
 	 *      }
-	 *   }
+	 *   },
+     *   output={
+     *      "class"="Pouce\UserBundle\Entity\User",
+     *      "groups"={"user"},
+     *      "parsers"={"Nelmio\ApiDocBundle\Parser\JmsMetadataParser"},
+     *   },
+     *   statusCodes={
+     *         200="Returned when successful",
+     *         404="Returned when no position have been found"
+     *   }
 	 * )
 	 *
 	 * GET Route annotation
@@ -93,12 +124,15 @@ class UserController extends Controller
 	 */
 	public function getUserByFirstNameAndLastNameAction($first_name,$last_name){
 		$user = $this->getDoctrine()->getRepository('PouceUserBundle:User')->findOneBy(array('first_name' => $first_name, 'last_name' => $last_name));
-		$user_json = $this->forward('PouceUserBundle:User:getUser', array('id' => $user->getId()), array('_format' => 'json'));
+		
 		if(!is_object($user)){
 			throw $this->createNotFoundException();
 		}
 
-		return(json_decode($user_json->getContent(), true));
+		$serializer = $this->container->get('serializer');
+		$userJSON = $serializer->serialize($user, 'json', SerializationContext::create()->setGroups(array('user')));
+
+		return new Response($userJSON,200,['content_type' => 'application/json']);
 	}
 
 	/**
@@ -111,8 +145,17 @@ class UserController extends Controller
 	 *          "dataType"="string",
 	 *          "requirement"="\d+",
 	 *          "description"="email of the user"
-	 *      },
-	 *   }
+	 *      }
+	 *   },
+     *   output={
+     *      "class"="Pouce\UserBundle\Entity\User",
+     *      "groups"={"user"},
+     *      "parsers"={"Nelmio\ApiDocBundle\Parser\JmsMetadataParser"},
+     *   },
+     *   statusCodes={
+     *         200="Returned when successful",
+     *         404="Returned when no position have been found"
+     *   }
 	 * )
 	 *
 	 * GET Route annotation
@@ -125,13 +168,19 @@ class UserController extends Controller
 			throw $this->createNotFoundException();
 		}
 
-		return(json_decode($user_json->getContent(), true));
+		$serializer = $this->container->get('serializer');
+		$userJSON = $serializer->serialize($user, 'json', SerializationContext::create()->setGroups(array('user')));
+
+		return new Response($userJSON,200,['content_type' => 'application/json']);
 	}
 
 	/**
      * @ApiDoc(
      *   resource = true,
      *   description = "Create new user",
+     *   statusCodes={
+     *         201="Returned when successful"
+     *   }
      * )
      *
      * POST Route annotation
@@ -220,7 +269,10 @@ class UserController extends Controller
 	 *          "requirement"="\d+",
 	 *          "description"="id of the user"
 	 *      }
-	 *   }
+	 *   },
+     *   statusCodes={
+     *         204="Returned when successful"
+     *   }
 	 * )
 	 *
 	 * DELETE Route annotation

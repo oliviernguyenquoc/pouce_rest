@@ -131,6 +131,8 @@ class User extends BaseUser
      * @ORM\ManyToOne(targetEntity="Pouce\UserBundle\Entity\School")
      * @ORM\JoinColumn(name="school_id", referencedColumnName="id", nullable=false)
      *
+     * @Groups({"user"})
+     *
      */
     private $school;
 

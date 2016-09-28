@@ -3,6 +3,7 @@
 namespace Pouce\TeamBundle\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
+use JMS\Serializer\Annotation\Groups;
 
 /**
  * Result
@@ -13,11 +14,13 @@ use Doctrine\ORM\Mapping as ORM;
 class Result
 {
     /**
-     * @var integer
-     *
      * @ORM\Column(name="id", type="integer")
      * @ORM\Id
      * @ORM\GeneratedValue(strategy="AUTO")
+     *
+     * @Groups({"result"})
+     *
+     * @var integer
      */
     private $id;
 
@@ -32,27 +35,39 @@ class Result
     private $comment;
 
     /**
-     * @var integer
-     *
      * @ORM\Column(name="lateness", type="integer")
+     *
+     * @Groups({"result"})
+     *
+     * @var integer
      */
     private $lateness;
 
     /**
-     * @var boolean
-     *
      * @ORM\Column(name="isValid", type="boolean")
+     *
+     * Groups({"result"})
+     *
+     * @var boolean
      */
     private $isValid;
 
     /**
      * @ORM\Column(name="nbCar", type="integer", nullable=true)
+     *
+     * Groups({"result"})
+     *
+     * @var integer
     */
     private $nbCar;
 
 
     /**
      * @ORM\Column(name="avis", type="text", nullable=true)
+     *
+     * Groups({"result"})
+     *
+     * @var string
     */
     private $avis;
 
@@ -64,13 +79,17 @@ class Result
     /**
      * @ORM\OneToOne(targetEntity="Pouce\TeamBundle\Entity\Position", cascade={"persist"})
      * @ORM\JoinColumn(nullable=false)
+     *
+     * Groups({"result"})
     */
     private $position;
 
     /**
-     * @var integer
-     *
      * @ORM\Column(name="rank", type="integer")
+     *
+     * Groups({"result"})
+     *
+     * @var integer
      */
     private $rank;
 
