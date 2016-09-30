@@ -21,7 +21,7 @@ class Position
      * @ORM\Id
      * @ORM\GeneratedValue(strategy="AUTO")
      * 
-     * @Groups({"position","team"})
+     * @Groups({"position","team","result"})
      *
      * @var integer
      */
@@ -33,7 +33,7 @@ class Position
      * @ORM\ManyToOne(targetEntity="Pouce\SiteBundle\Entity\City")
      * @ORM\JoinColumn(nullable=true)
      * 
-     * @Groups({"position","team"})
+     * @Groups({"position","team","result"})
     */
     private $city;
 
@@ -42,7 +42,7 @@ class Position
      *
      * @ORM\Column(name="distance", type="float", nullable=true)
      *
-     * @Groups({"position","team"})
+     * @Groups({"position","team","result"})
      *
      * @var float
      */
@@ -62,7 +62,7 @@ class Position
      * @Gedmo\Timestampable(on="create")
      * @ORM\Column(type="datetime")
      *
-     * @Groups({"position"})
+     * @Groups({"position","result"})
      *
      * @var datetime $created
      */

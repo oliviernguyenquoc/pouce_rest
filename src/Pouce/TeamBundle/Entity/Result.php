@@ -56,7 +56,7 @@ class Result
      * 
      * @ORM\Column(name="isValid", type="boolean")
      *
-     * Groups({"result"})
+     * @Groups({"result"})
      *
      * @var boolean
      */
@@ -67,7 +67,7 @@ class Result
      * 
      * @ORM\Column(name="nbCar", type="integer", nullable=true)
      *
-     * Groups({"result"})
+     * @Groups({"result"})
      *
      * @var integer
     */
@@ -79,7 +79,7 @@ class Result
      * 
      * @ORM\Column(name="avis", type="text", nullable=true)
      *
-     * Groups({"result"})
+     * @Groups({"result"})
      *
      * @var string
     */
@@ -96,7 +96,7 @@ class Result
      * @ORM\OneToOne(targetEntity="Pouce\TeamBundle\Entity\Position", cascade={"persist"})
      * @ORM\JoinColumn(nullable=false)
      *
-     * Groups({"result"})
+     * @Groups({"result"})
     */
     private $position;
 
@@ -105,7 +105,7 @@ class Result
      * 
      * @ORM\Column(name="rank", type="integer")
      *
-     * Groups({"result"})
+     * @Groups({"result"})
      *
      * @var integer
      */

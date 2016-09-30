@@ -52,15 +52,11 @@ class ResultController extends Controller
 	{
 		$em = $this->getDoctrine()->getManager();
 
-		$result = $em->getRepository('PouceTeamBundle:Result')->getResultTeam($id);
+		$result = $em->getRepository('PouceTeamBundle:Result')->findOneByTeam($id);
 
 		if(!is_object($result)){
 			throw $this->createNotFoundException();
 		}
-
-		dump($result);
-		dump('------------------');
-		dump($result->getPosition()->getDistance());
 
 		$serializer = $this->container->get('serializer');
 		$resultJSON = $serializer->serialize($result, 'json', SerializationContext::create()->setGroups(array('result')));
