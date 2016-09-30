@@ -33,13 +33,13 @@ class UserController extends Controller
 	 *
 	 * ```
 	 *{
-	 *	"email": "oliv.nguyen@hotmail.fr"
+	 *	"email": "gmail@gmail.com"
 	 *	"id": 18
 	 *	"first_name": "Olivier"
-	 *	"last_name": "Nguyen"
+	 *	"last_name": "Dupond"
 	 *	"sex": "Homme"
 	 *	"promotion": "Bac +5"
-	 *	"telephone": "0659277852"
+	 *	"telephone": "0606060606"
 	 *	"school": 
 	 *	{
 	 *		"id": 1

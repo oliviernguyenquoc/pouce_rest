@@ -33,19 +33,19 @@ class TeamController extends Controller
 	 *	[
 	 *		{
 	 *			"id": 43
-	 *			"first_name": "Sébastien"
-	 *			"last_name": "Gondron"
+	 *			"first_name": "Olivier"
+	 *			"last_name": "Dupond"
 	 *			"sex": "Homme"
 	 *			"promotion": "Bac +4"
-	 *			"telephone": "0685667132"
+	 *			"telephone": "0606060606"
 	 *		}
 	 *		{
 	 *			"id": 47
-	 *			"first_name": "Camille"
-	 *			"last_name": "BARIZIEN"
+	 *			"first_name": "Olivia"
+	 *			"last_name": "Dupond"
 	 *			"sex": "Femme"
 	 *			"promotion": "Bac +4"
-	 *			"telephone": "0650764254"
+	 *			"telephone": "0606060606"
 	 *		}
 	 *	],
 	 *	"edition": 
@@ -54,7 +54,7 @@ class TeamController extends Controller
 	 *		"date_of_event": "2015-10-03T00:00:00+0200"
 	 *		"status": "finished"
 	 *	},
-	 *	"team_name":"Ing\u00e9nieurs Sur-Mesure",
+	 *	"team_name":"Best team ever",
 	 *	"target_destination":"Bruxelles"
 	 *}
 	 * ```  
@@ -340,19 +340,19 @@ class TeamController extends Controller
 	 *	[
 	 *		{
 	 *			"id": 43
-	 *			"first_name": "Sébastien"
-	 *			"last_name": "Gondron"
+	 *			"first_name": "Olivier"
+	 *			"last_name": "Dupond"
 	 *			"sex": "Homme"
 	 *			"promotion": "Bac +4"
-	 *			"telephone": "0685667132"
+	 *			"telephone": "0606060606"
 	 *		}
 	 *		{
 	 *			"id": 47
-	 *			"first_name": "Camille"
-	 *			"last_name": "BARIZIEN"
+	 *			"first_name": "Olivia"
+	 *			"last_name": "Dupond"
 	 *			"sex": "Femme"
 	 *			"promotion": "Bac +4"
-	 *			"telephone": "0650764254"
+	 *			"telephone": "0606060606"
 	 *		}
 	 *	],
 	 *	"edition": 
@@ -361,7 +361,7 @@ class TeamController extends Controller
 	 *		"date_of_event": "2015-10-03T00:00:00+0200"
 	 *		"status": "finished"
 	 *	},
-	 *	"team_name":"Ing\u00e9nieurs Sur-Mesure",
+	 *	"team_name":"Best team ever",
 	 *	"target_destination":"Bruxelles"
 	 *}
 	 * ```  

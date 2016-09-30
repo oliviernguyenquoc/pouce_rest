@@ -21,6 +21,34 @@ use FOS\RestBundle\Controller\Annotations\Post;
 class ResultController extends Controller
 {
 	/**
+	 * ## Response Example ##
+	 * 
+	 * ```  
+	 *{
+	 *	"id": 26,
+	 *	"lateness": 0,
+	 *	"is_valid": true,
+	 *	"nb_car": 0,
+	 *	"avis": "",
+	 *	"position": 
+	 *	{
+	 *		"id": 610,
+	 *		"city": 
+	 *		{
+	 *			"id": 3128760,
+	 *			"name": "Barcelona",
+	 *			"country": 
+	 *			{
+	 *				"name": "Spain"
+	 *			}
+	 *		},
+	 *		"distance": 973349,
+	 *		"created": "2015-10-03T22:46:24+0200"
+	 *	},
+	 *	"rank": 17
+	 *}
+	 * ```  
+	 * 
 	 * @ApiDoc(
 	 *   resource = true,
 	 *   section="Result",
