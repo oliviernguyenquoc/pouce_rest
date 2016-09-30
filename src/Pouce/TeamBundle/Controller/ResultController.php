@@ -36,7 +36,7 @@ class ResultController extends Controller
      *   output={
      *      "class"="Pouce\TeamBundle\Entity\Result",
      *      "groups"={"result"},
-     *      "parsers"={"Nelmio\ApiDocBundle\Parser\JmsMetadataParser"},
+     *      "parsers"={"Nelmio\ApiDocBundle\Parser\JmsMetadataParser"}
      *   },
      *   statusCodes={
      *         200="Returned when successful",
@@ -52,7 +52,7 @@ class ResultController extends Controller
 	{
 		$em = $this->getDoctrine()->getManager();
 
-		$result = $em->getRepository('PouceTeamBundle:Result')->findOneByTeam($id);
+		$result = $em->getRepository('PouceTeamBundle:Result')->getResultTeam($id);
 
 		if(!is_object($result)){
 			throw $this->createNotFoundException();

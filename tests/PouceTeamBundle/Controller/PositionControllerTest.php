@@ -10,10 +10,9 @@ class PositionControllerTest extends CustomTestcase
 {
     public function testGetLastPosition()
     {
-    	$client = $this->createClient();
-        $client->request('GET', '/api/v1/teams/4/positions/last');
+        $this->client->request('GET', '/api/v1/teams/4/positions/last');
 
-        $response = $client->getResponse();
+        $response = $this->client->getResponse();
         $this->assertEquals(200,$response->getStatusCode());
  
         $content = json_decode($response->getContent(), true);
@@ -25,10 +24,9 @@ class PositionControllerTest extends CustomTestcase
 
     public function testGetFurthestPositionAction()
     {
-    	$client = $this->createClient();
-        $client->request('GET', '/api/v1/teams/4/positions/furthest');
+        $this->client->request('GET', '/api/v1/teams/4/positions/furthest');
 
-        $response = $client->getResponse();
+        $response = $this->client->getResponse();
         $this->assertEquals(200,$response->getStatusCode());
  
         $content = json_decode($response->getContent(), true);
@@ -40,10 +38,9 @@ class PositionControllerTest extends CustomTestcase
 
     public function testGetPositionAction()
     {
-        $client = $this->createClient();
-        $client->request('GET', '/api/v1/teams/4/positions');
+        $this->client->request('GET', '/api/v1/teams/4/positions');
 
-        $response = $client->getResponse();
+        $response = $this->client->getResponse();
         $this->assertEquals(200,$response->getStatusCode());
  
         $content = json_decode($response->getContent(), true);
@@ -70,38 +67,34 @@ class PositionControllerTest extends CustomTestcase
         );
 
         /* ********* Test to create position *********** */
-        $client = $this->createClient();
-        $client->request('POST','/api/v1/teams/'.$teamId.'/positions',array(), array(), array('CONTENT_TYPE' => 'application/json'), json_encode($data));
+        $this->client->request('POST','/api/v1/teams/'.$teamId.'/positions',array(), array(), array('CONTENT_TYPE' => 'application/json'), json_encode($data));
 
-        $response = $client->getResponse();
+        $response = $this->client->getResponse();
         $this->assertEquals(201,$response->getStatusCode());
 
         $content = $response->getContent();
         $this->assertEquals($content,"Position created.");
 
         /* ********* Test to edit position *********** */
-        $client = $this->createClient();
-        $client->request('GET','/api/v1/teams/'.$teamId.'/positions/last');
-        $position = json_decode($client->getResponse()->getContent(), true);
+        $this->client->request('GET','/api/v1/teams/'.$teamId.'/positions/last');
+        $position = json_decode($this->client->getResponse()->getContent(), true);
 
         $data_edit = array(
             'created'  => '2020-06-05 12:15:00'
         );
 
-        $client = $this->createClient();
-        $client->request('PUT','/api/v1/teams/'.$teamId.'/positions',array(), array(), array('CONTENT_TYPE' => 'application/json'), json_encode($data));
+        $this->client->request('PUT','/api/v1/teams/'.$teamId.'/positions',array(), array(), array('CONTENT_TYPE' => 'application/json'), json_encode($data));
 
-        $response = $client->getResponse();
+        $response = $this->client->getResponse();
         $this->assertEquals(201,$response->getStatusCode());
 
         $content = $response->getContent();
         $this->assertEquals($content,"Position modified.");
 
         /* ********* Test to delete position *********** */
-        $client = $this->createClient();
-        $client->request('DELETE', '/api/v1/positions/'.$position['id']);
+        $this->client->request('DELETE', '/api/v1/positions/'.$position['id']);
 
-        $response = $client->getResponse();
+        $response = $this->client->getResponse();
         $this->assertEquals(204,$response->getStatusCode());
 
         $content = $response->getContent();

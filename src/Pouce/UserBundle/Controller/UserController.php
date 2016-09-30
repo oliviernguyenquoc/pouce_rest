@@ -15,11 +15,14 @@ use FOS\UserBundle\Event\FormEvent;
 use FOS\UserBundle\Event\FilterUserResponseEvent;
 use FOS\UserBundle\Controller\RegistrationController as BaseController;
 
+use Pouce\UserBundle\Form\RegistrationType;
+
 use JMS\Serializer\SerializationContext;
 
 use Nelmio\ApiDocBundle\Annotation\ApiDoc;
 use FOS\RestBundle\Controller\Annotations\Get;
 use FOS\RestBundle\Controller\Annotations\Post;
+use FOS\RestBundle\Controller\Annotations\Put;
 use FOS\RestBundle\Controller\Annotations\Delete;
 use FOS\RestBundle\View\View;
 
@@ -178,6 +181,28 @@ class UserController extends Controller
 	}
 
 	/**
+	 * ## Input example ##
+	 * 
+	 * ```
+	 *{
+	 *	"fos_user_registration_form":
+	 *	{
+	 *        "email": "tryTeam@tryteam.com",
+	 *        "plainPassword" : 
+	 *        {
+	 *            "first"     : "passwordTest",
+	 *            "second"    : "passwordTest"
+	 *        },
+	 *        "first_name"    : "PrenomTest",
+	 *        "last_name"     : "NomTest",
+	 *        "sex"           : "Femme",
+     *        "school"        : "École centrale de Lille",
+	 *        "promotion"     : "Bac +1",
+	 *        "telephone"     : "0600000000"
+	 *    }
+	 *}
+	 *```
+	 *
      * @ApiDoc(
      *   resource = true,
      *   section="User",
@@ -260,6 +285,89 @@ class UserController extends Controller
 
         $view = View::create($form, 400);
         return $this->get('fos_rest.view_handler')->handle($view);
+    }
+
+    /**
+	 * ## Input example ##
+	 * 
+	 * ```
+	 *{
+	 *	"fos_user_registration_form":
+	 *	{
+	 *        "first_name"    : "PrenomTest",
+	 *        "last_name"     : "NomTest",
+	 *        "sex"           : "Femme",
+     *        "school"        : "École centrale de Lille",
+	 *        "promotion"     : "Bac +3",
+	 *        "telephone"     : "0600000000"
+	 *    }
+	 *}
+	 *```
+     * 
+     * @ApiDoc(
+     *   resource = true,
+     *   section="User",
+     *   description = "Update a user",
+     *   requirements={
+     *      {
+     *          "name"="id",
+     *          "dataType"="integer",
+     *          "requirement"="yyyy-MM-dd hh:mm:ss",
+     *          "description"="User id"
+     *      }
+     *   },
+     *   statusCodes={
+     *         200="Returned when successful",
+     *         400="Returned when user is not found"
+     *   }
+     * )
+     *
+     * PUT Route annotation
+     * @Put("/users/{id}")
+     */
+    public function putUserAction(Request $request, $id)
+    {
+    	$em = $this->getDoctrine()->getManager();
+        $user = $em->getRepository('PouceUserBundle:User')->find($id);
+
+        $mail = $user->getEmail();
+
+        if (!is_object($user)) {
+            throw $this->createNotFoundException();
+        }
+
+        $form = $this->get('form.factory')->create(RegistrationType::class, $user);
+
+     //    /** @var $formFactory \FOS\UserBundle\Form\Factory\FactoryInterface */
+   		// $formFactory = $this->get('pouce_user_registration');
+     //    $form = $formFactory->createForm();
+
+	    $form->setData($user);
+	    $form->handleRequest($request);
+
+	    $form->submit($request->request->all()); 
+
+	    // $first_name = $request->request->get("first_name");
+     //    $last_name = $request->request->get("last_name");
+     //    $sex = $request->request->get("sex");
+     //    $school = $request->request->get("school");
+     //    $promotion = $request->request->get("promotion");
+     //    $telephone = $request->request->get("telephone");
+
+        if($form->isValid()){
+
+        	/** @var $userManager \FOS\UserBundle\Model\UserManagerInterface */
+	        $userManager = $this->get('fos_user.user_manager');
+	        $user->setEmail($mail);
+	        $userManager->updateUser($user);
+
+            $response = new Response("User modified.", 200);  
+            return $response;
+        }
+        else
+        {
+            return $form;
+        }
     }
 
 	/**

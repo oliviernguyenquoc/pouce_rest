@@ -6,6 +6,13 @@ use Symfony\Bundle\FrameworkBundle\Test\WebTestCase;
 
 class CustomTestcase extends WebTestCase
 {
+    protected $client;
+
+    protected function setUp()
+    {
+        $this->client = $this->createClient();
+    }
+
 	public static function setUpBeforeClass()
 	{
 	    // Temporarily increase memory limit to 256MB
@@ -17,7 +24,7 @@ class CustomTestcase extends WebTestCase
     */
     protected function createUser($number, $genre)
     {
-        $client_temp_user = $this->createClient();
+        $client = $this->createClient();
 
         $data_post_user = array(
             "fos_user_registration_form" => array(
@@ -35,7 +42,7 @@ class CustomTestcase extends WebTestCase
             )
         );
 
-        $client_temp_user->request('POST','/api/v1/users', array(),array(),array('CONTENT_TYPE' => 'application/json'), json_encode($data_post_user));
+        $client->request('POST','/api/v1/users', array(),array(),array('CONTENT_TYPE' => 'application/json'), json_encode($data_post_user));
     }
 
     /*
@@ -43,12 +50,12 @@ class CustomTestcase extends WebTestCase
     */
     protected function deleteUser($number)
     {
-        $client_temp = $this->createClient();
-        $client_temp->request('GET', '/api/v1/users/email/tryteam'.$number.'@tryteam.com');
-        $response = $client_temp->getResponse();
+        $client = $this->createClient();
+
+        $client->request('GET', '/api/v1/users/email/tryteam'.$number.'@tryteam.com');
+        $response = $client->getResponse();
         $content = json_decode($response->getContent(), true);
 
-        $client = $this->createClient();
         $client->request('DELETE', '/api/v1/users/'.$content['id']);
     }
 
@@ -57,6 +64,8 @@ class CustomTestcase extends WebTestCase
     */
     protected function createTeam($number1, $number2)
     {
+        $client = $this->createClient();
+
     	$data = array(
             'teamName'          => 'tryTeam',
             'targetDestination' => 'tryDestination',
@@ -68,7 +77,7 @@ class CustomTestcase extends WebTestCase
         );
         
         //Test create a team
-        $client = $this->createClient();
+
         $client->request('POST','/api/v1/teams',array(), array(), array('CONTENT_TYPE' => 'application/json'), json_encode($data));
     }
 
@@ -77,31 +86,31 @@ class CustomTestcase extends WebTestCase
     */
     protected function deleteTeam($number)
     {
+        $client = $this->createClient();
+
         /**************  Test remove team  **********************/
         //Get user to have his id
-        $client_1 = $this->createClient();
-        $client_1->request('GET', '/api/v1/users/email/'.'tryteam'.$number.'@tryteam.com');
-        $user = json_decode($client_1->getResponse()->getContent(), true);
+        $client->request('GET', '/api/v1/users/email/'.'tryteam'.$number.'@tryteam.com');
+        $user = json_decode($client->getResponse()->getContent(), true);
 
         //Find his team
-        $client_2 = $this->createClient();
-        $client_2->request('GET', '/api/v1/users/'.$user['id'].'/teams/last');
-        $team = json_decode($client_2->getResponse()->getContent(), true);
+        $client->request('GET', '/api/v1/users/'.$user['id'].'/teams/last');
+        $team = json_decode($client->getResponse()->getContent(), true);
 
-        $client = $this->createClient();
         $client->request('DELETE', '/api/v1/teams/'.$team['id']);
     }
 
     protected function getTeamId($number)
     {
-    	$client_1 = $this->createClient();
-        $client_1->request('GET', '/api/v1/users/email/tryteam'.$number.'@tryteam.com');
-        $user = json_decode($client_1->getResponse()->getContent(), true);
+    	$client = $this->createClient();
+
+        $client->request('GET', '/api/v1/users/email/tryteam'.$number.'@tryteam.com');
+        $user = json_decode($client->getResponse()->getContent(), true);
 
         //Find his team
-        $client_2 = $this->createClient();
-        $client_2->request('GET', '/api/v1/users/'.$user['id'].'/teams/last');
-        $team = json_decode($client_2->getResponse()->getContent(), true);
+        $client = $this->createClient();
+        $client->request('GET', '/api/v1/users/'.$user['id'].'/teams/last');
+        $team = json_decode($client->getResponse()->getContent(), true);
 
         return $team['id'];
     }
@@ -111,9 +120,9 @@ class CustomTestcase extends WebTestCase
     */
     protected function getAccessToken()
     {
-        require('config_oauth.php');
-        
         $client = $this->createClient();
+
+        require('config_oauth.php');
 
         $client->request('GET', '/oauth/v2/token?grant_type=password&username='.$username.'&password='.$password.'&client_id='.$client_test.'&client_secret='.$client_secret_test);
         $response = $client->getResponse();

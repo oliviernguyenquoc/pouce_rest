@@ -63,10 +63,8 @@ class ResultRepository extends EntityRepository
 	{
 		$qb = $this	-> createQueryBuilder('r')
                          -> join('r.team','t')
-                         -> addSelect('t')
-                         -> join('r.position','p')
-                         -> addSelect('p')
-					-> where('r.team = :idTeam')
+                          -> addSelect('t')
+					-> where('t.id = :idTeam')
 					 ->setParameter('idTeam', $teamId);
 
 		return $qb->getQuery();

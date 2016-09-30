@@ -6,12 +6,18 @@ use Symfony\Bundle\FrameworkBundle\Test\WebTestCase;
 
 class SchoolControllerTest extends WebTestCase
 {
+    protected $client;
+
+    protected function setUp()
+    {
+        $this->client = $this->createClient();
+    }
+
     public function testGetEditionSchools()
     {
-    	$client = $this->createClient();
-        $client->request('GET', '/api/v1/editions/1/schools');
+        $this->client->request('GET', '/api/v1/editions/1/schools');
 
-        $response = $client->getResponse();
+        $response = $this->client->getResponse();
         $this->assertEquals(200,$response->getStatusCode());
  
         $content = json_decode($response->getContent(), true);

@@ -328,7 +328,7 @@ class PositionController extends Controller
      * @ApiDoc(
      *   resource = true,
      *   section="Position",
-     *   description = "Update a edition",
+     *   description = "Update a position",
      *   requirements={
      *      {
      *          "name"="id",

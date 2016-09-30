@@ -53,7 +53,6 @@ class SchoolController extends Controller
         $schoolsEditionJSON = $serializer->serialize($schoolsEdition, 'json', SerializationContext::create()->setGroups(array('school')));
 
         return new Response($schoolsEditionJSON,200,['content_type' => 'application/json']);
-
 	}
 
 	/**
@@ -91,7 +90,5 @@ class SchoolController extends Controller
         $school = $serializer->serialize($school, 'json', SerializationContext::create()->setGroups(array('school')));
 
         return new Response($school,200,['content_type' => 'application/json']);
-
 	}
-
 }
