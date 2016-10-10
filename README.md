@@ -23,6 +23,8 @@ Repository for the symfony version of restful service for Pouce d'Or Website : w
 
 ## Setup
 
+Get vendors via composer ("composer update"). https://getcomposer.org/download/
+
 Run Apache and mySQL with the test database. You can use MAMP (OSX) or WAMP (Windows).
 
 ## Access to API documentation
