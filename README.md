@@ -3,7 +3,7 @@
 
 Repository for the symfony version of restful service for Pouce d'Or Website : www.poucedor.fr
 
-## Major bundles used
+# Major bundles used
 
 * Symfony 3.1
 * Doctrine
@@ -14,18 +14,18 @@ Repository for the symfony version of restful service for Pouce d'Or Website : w
 * JMSSerializerBundle
 * NelmioApiDocBundle
 
-## To Do
+# To Do
 
 * Add security layer with user roles
 * Add Facebook and Google OAuth2
 
-## How to use it
+# How to use it
 
-# Setup
+## Setup
 
 Run Apache and mySQL with the test database. You can use MAMP (OSX) or WAMP (Windows).
 
-# Access to API documentation
+## Access to API documentation
 
 Access with the following address: localhost:8888/web/app_dev.php/api/doc
 
@@ -34,6 +34,8 @@ Access with the following address: localhost:8888/web/app_dev.php/api/doc
 Install phpunit on your machine: https://phpunit.de/getting-started.html  
 
 Run tests with the command: phpunit
+
+# What you have to know on the project
 
 ## Security
 
@@ -44,7 +46,7 @@ We use OAuth2 authentification: password grant
 It's a personnal project done after work hours for the Pouce d'Or contest.
 
 
-## License
+# License
 
 This website have been created and is owned by Olivier NGUYEN QUOC.
 
