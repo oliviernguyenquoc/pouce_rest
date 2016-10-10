@@ -23,4 +23,16 @@ class ResultControllerTest extends CustomTestcase
         $this->assertTrue(isset($content['position']));
         $this->assertTrue(isset($content['rank']));
     }
+
+    public function testPostResult()
+    {
+        // $this->createUser('1','Homme');
+        // $this->createUser('2','Femme');
+        // $this->createTeam('1', '2');
+        // $teamId = $this->getTeamId('1');
+
+        // $this->deleteUser('1');
+        // $this->deleteUser('2');
+        // $this->deleteTeam('1');
+    }
 }

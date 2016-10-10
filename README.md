@@ -16,9 +16,28 @@ Repository for the symfony version of restful service for Pouce d'Or Website : w
 
 ## To Do
 
-* Add REST functions
 * Add security layer with user roles
-* Fix results
+* Add Facebook and Google OAuth2
+
+## How to use it
+
+# Setup
+
+Run Apache and mySQL with the test database. You can use MAMP (OSX) or WAMP (Windows).
+
+# Access to API documentation
+
+Access with the following address: localhost:8888/web/app_dev.php/api/doc
+
+## Run tests
+
+Install phpunit on your machine: https://phpunit.de/getting-started.html  
+
+Run tests with the command: phpunit
+
+## Security
+
+We use OAuth2 authentification: password grant
 
 ## The project
 

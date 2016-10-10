@@ -16,7 +16,7 @@ class CustomTestcase extends WebTestCase
 	public static function setUpBeforeClass()
 	{
 	    // Temporarily increase memory limit to 256MB
-	    ini_set('memory_limit','256M');
+	    ini_set('memory_limit','512M');
 	}    
 
     /*

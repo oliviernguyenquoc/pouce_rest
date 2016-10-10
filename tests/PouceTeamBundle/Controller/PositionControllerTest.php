@@ -101,6 +101,7 @@ class PositionControllerTest extends CustomTestcase
         $this->assertEquals($content,"Position deleted.");
 
         $this->deleteUser('1');
+        $this->deleteUser('2');
         $this->deleteTeam('1');
     }
 }
