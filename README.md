@@ -16,8 +16,21 @@ Repository for the symfony version of restful service for Pouce d'Or Website : w
 
 # To Do
 
+## For Version 1.0
+
 * Add security layer with user roles
+* Capifony (Deployement Tool)
+* Deal with email service not to be marked as spam
+
+## For Version 2.0
+
+* Autocomplete function for cities
+* Elasticsearch to have a fast autocomplete response time (FOSBundle)
+
+## For Version 3.0
+
 * Add Facebook and Google OAuth2
+
 
 # How to use it
 

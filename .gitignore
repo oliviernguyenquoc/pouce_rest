@@ -15,3 +15,4 @@
 /vendor/
 /web/bundles/
 tests/PouceTeamBundle/Controller/config_oauth.php
+dbTest.zip
