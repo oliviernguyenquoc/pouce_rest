@@ -16,6 +16,8 @@ use FOS\RestBundle\Controller\Annotations\Get;
 use FOS\RestBundle\Controller\Annotations\Post;
 use FOS\RestBundle\Controller\Annotations\Put;
 
+use Pouce\TeamBundle\Form\PositionType;
+
 class PositionController extends Controller
 {
 	/**
@@ -245,17 +247,15 @@ class PositionController extends Controller
 		$em = $this->getDoctrine()->getManager();
 		$repositoryTeam = $em->getRepository('PouceTeamBundle:Team');
 		$repositoryCity = $em->getRepository('PouceSiteBundle:City');
-		$repositoryResult = $em->getRepository('PouceTeamBundle:Result');
 
 		//Get request objects
-		$editionId = $request->request->get("editionId");
-		$cityId = $request->request->get('cityId');
+		$cityId = $request->request->get('city');
 
 		$city = $repositoryCity->find($cityId);
 		$team = $repositoryTeam->find($id);
 
 		//Check if team and city exist
-		if(!is_object($city) or !is_object($team)){
+		if(!is_object($city)){
 			throw $this->createNotFoundException();
 		}
 
@@ -271,13 +271,14 @@ class PositionController extends Controller
 			$position->setTeam($team);
 			$position->setCity($city);
 
-			$longArrivee = $ville->getLongitude();
-			$latArrivee = $ville->getLatitude();
+			$longArrivee = $city->getLongitude();
+			$latArrivee = $city->getLatitude();
 
 			//Calcule du trajet
 			$trajet = $this->container->get('pouce_team.trajet');
 
 			$startCity = $team->getStartCity();
+
 			$distance = $trajet->calculDistance($startCity->getLongitude(),$startCity->getLatitude(),$longArrivee,$latArrivee);
 
 			$position->setDistance($distance);

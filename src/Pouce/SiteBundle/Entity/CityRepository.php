@@ -12,14 +12,16 @@ use Doctrine\ORM\EntityRepository;
  */
 class CityRepository extends EntityRepository
 {
+	//TO DO: Change city search if exist or not search with providers
 	public function findLikeName($cityName)
 	{
 		$qb = $this	-> createQueryBuilder('c')
 					-> where('c.name LIKE :cityName')
 					-> setParameter('cityName', '%'.$cityName.'%')
+					-> setMaxResults(6)
 			;
 
-		return $qb->getQuery()->getResult() ;
+		return $qb->getQuery()->getResult();
 	}
 
 }

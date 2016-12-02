@@ -26,6 +26,7 @@ class AppKernel extends Kernel
             new Pouce\OAuthServerBundle\PouceOAuthServerBundle(),
             new Pouce\SiteBundle\PouceSiteBundle(),
             new Stof\DoctrineExtensionsBundle\StofDoctrineExtensionsBundle(),
+            new Bazinga\Bundle\GeocoderBundle\BazingaGeocoderBundle(),
         ];
 
         if (in_array($this->getEnvironment(), ['dev', 'test'], true)) {

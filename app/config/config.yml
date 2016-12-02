@@ -134,3 +134,5 @@ jms_serializer:
                 path: "@PouceUserBundle/Resources/config/serializer"
 
 nelmio_api_doc: ~
+
+bazinga_geocoder: ~

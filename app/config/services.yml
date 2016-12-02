@@ -15,10 +15,10 @@ services:
         class: Pouce\UserBundle\EventListener\UserRegistrationListener
         tags:
             - { name: kernel.event_subscriber }
-    pouce_user.user:
-        class: Pouce\UserBundle\Services\PouceUser
     pouce_team.trajet:
         class: Pouce\TeamBundle\Services\PouceTrajet
+    pouce_team.location:
+        class: Pouce\TeamBundle\Services\LocationService
 
 #    service_name:
 #        class: AppBundle\Directory\ClassName

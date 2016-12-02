@@ -25,7 +25,6 @@ Repository for the symfony version of restful service for Pouce d'Or Website : w
 ## For Version 2.0
 
 * Autocomplete function for cities
-* Elasticsearch to have a fast autocomplete response time (FOSBundle)
 
 ## For Version 3.0
 

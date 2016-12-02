@@ -79,6 +79,15 @@ class PositionControllerTest extends CustomTestcase
         $this->client->request('GET','/api/v1/teams/'.$teamId.'/positions/last');
         $position = json_decode($this->client->getResponse()->getContent(), true);
 
+        $this->assertGreaterThanOrEqual(1, count($position));
+        $this->assertArrayHasKey('city', $position[0]);
+        $this->assertTrue(isset($position[0]['id']));
+        $this->assertTrue(isset($position[0]['distance']));
+        $this->assertTrue(isset($position[0]['city']['id']));
+        $this->assertTrue(isset($position[0]['city']['longitude']));
+        $this->assertTrue(isset($position[0]['city']['name']));
+        $this->assertTrue(isset($position[0]['city']['country']['name']));
+
         $data_edit = array(
             'created'  => '2020-06-05 12:15:00'
         );

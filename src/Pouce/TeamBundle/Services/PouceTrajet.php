@@ -19,9 +19,11 @@ class PouceTrajet
 
 	public function calculDistance($longDepart,$latDepart,$longArrivee,$latArrivee)
 	{
-		$url='http://router.project-osrm.org/viaroute?loc='.$latDepart.','.$longDepart.'&loc='.$latArrivee.','.$longArrivee;
+		// https://github.com/Project-OSRM/osrm-backend/blob/master/docs/http.md#route-service
+		$url='http://router.project-osrm.org/route/v1/car/'.$longDepart.','.$latDepart.';'.$longArrivee.','.$latArrivee;
 		$response = $this->addInfoURLandExecute($url);
-		return $response["route_summary"]["total_distance"];
+
+		return $response["routes"][0]["legs"][0]["distance"];
 	}
 
 	private function addInfoURLandExecute($url) {
