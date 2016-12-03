@@ -7,6 +7,7 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 
 use Pouce\SiteBundle\Entity\Edition;
+use Pouce\SiteBundle\Entity\City;
 
 use JMS\Serializer\SerializationContext;
 
@@ -61,7 +62,7 @@ class CityController extends Controller
      * ```  
      *{
      *  "city": "Rouen",
-     *  "country": "France",
+     *  "country": "France", // Or "country": "321"
      *  "latitude": 49.44313,
      *  "longitude": 1.09932
      *}
@@ -79,73 +80,48 @@ class CityController extends Controller
      * POST Route annotation
      * @Post("/cities")
      */
-    public function postCityAction(Request $request, $id)
+    public function postCityAction(Request $request)
     {
         $em = $this->getDoctrine()->getManager();
-        $repositoryCity = $em->getRepository('PouceSiteBundle:City');
+        $repositoryCountry = $em->getRepository('PouceSiteBundle:Country');
 
         //Get request objects
-        $editionId = $request->request->get("editionId");
-        $cityId = $request->request->get('cityId');
+        $countryJSON = $request->request->get('country');
 
-        $city = $repositoryCity->find($cityId);
-        $team = $repositoryTeam->find($id);
+        //Check if id of country is sent or name of country
+        if(is_string($countryJSON))
+        {
+            $country = $repositoryCountry->findByName($countryJSON);
+        }
+        elseif(is_integer($countryJSON))
+        {
+            $country = $repositoryCountry->find($countryJSON);
+        }
+        else
+        {
+            throw $this->createNotFoundException();
+        }
+        
 
         //Check if team and city exist
-        if(!is_object($city) or !is_object($team)){
+        if(!is_object($country)){
             throw $this->createNotFoundException();
         }
 
-        $position = new Position();
+        $city = new City();
 
         // On crée le FormBuilder grâce au service form factory
-        $form = $this->get('form.factory')->create(PositionType::class, $position);
+        $form = $this->get('form.factory')->create(CityType::class, $city);
 
         $form->submit($request->request->all()); // Validation des données / adaptation de symfony au format REST
 
         if ($form->isValid()) {
 
-            $position->setTeam($team);
-            $position->setCity($city);
-
-            $longArrivee = $ville->getLongitude();
-            $latArrivee = $ville->getLatitude();
-
-            //Calcule du trajet
-            $trajet = $this->container->get('pouce_team.trajet');
-
-            $startCity = $team->getStartCity();
-            $distance = $trajet->calculDistance($startCity->getLongitude(),$startCity->getLatitude(),$longArrivee,$latArrivee);
-
-            $position->setDistance($distance);
-
             //Enregistrement
-            $em->persist($position);
+            $em->persist($city);
             $em->flush();
 
-            //TODO: Check the result thing
-            // if($result==NULL)
-            // {
-            //  $result = new Result();
-            //  $result->setTeam($team);
-            //  $result->setPosition($position);
-            //  $result->setLateness(0);
-            //  $result->setIsValid(false);
-            //  $result->setRank(0);
-            // }
-            // else
-            // {
-            //  $previousDistance = $result->getPosition()->getDistance();
-
-            //  //On regarde si le record à été battu. Si oui, on enregistre le nouveau record
-            //  if($previousDistance < $distance)
-            //  {
-            //      //S'il est battu on le remplace
-            //      $result->setPosition($position);
-            //  }
-            // }
-
-            $response = new Response("Position created.", 201);               
+            $response = new Response("City created.", 201);               
             return $response;
         }
         else {
