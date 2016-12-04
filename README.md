@@ -16,6 +16,10 @@ Repository for the symfony version of restful service for Pouce d'Or Website : w
 
 # To Do
 
+## Now
+
+* Need unit test for postTeam and postCity
+
 ## For Version 1.0
 
 * Add security layer with user roles

@@ -6,9 +6,10 @@ use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\Extension\Core\Type\NumberType;
+use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 
-class EditionType extends AbstractType
+class CityType extends AbstractType
 {
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
@@ -16,13 +17,7 @@ class EditionType extends AbstractType
             ->add('name', TextType::class, array(
                 'required'  => true
             ))
-            ->add('country', EntityType::class, array(
-                'class' => 'PouceSiteBundle:Country',
-                'required'  => true
-            ))
-            ->add('province', TextType::class, array(
-                'required'  => true
-            ))
+            ->add('province', TextType::class)
             ->add('population', NumberType::class)
             ->add('longitude', NumberType::class, array(
                 'required'  => true
@@ -40,7 +35,8 @@ class EditionType extends AbstractType
     {
         $resolver->setDefaults(array(
             'data_class' => 'Pouce\SiteBundle\Entity\City',
-            'csrf_protection' => false
+            'csrf_protection' => false,
+            'allow_extra_fields' => true
         ));
     }
 

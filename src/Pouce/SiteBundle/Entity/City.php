@@ -54,9 +54,6 @@ class City
      * Province
      * 
      * @ORM\Column(name="province", type="string", length=35, nullable=true)
-     * 
-     * @Assert\NotBlank()
-     * @Assert\NotNull()
      *
      * @var string
      */

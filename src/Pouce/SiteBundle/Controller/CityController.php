@@ -9,6 +9,8 @@ use Symfony\Component\HttpFoundation\Response;
 use Pouce\SiteBundle\Entity\Edition;
 use Pouce\SiteBundle\Entity\City;
 
+use Pouce\SiteBundle\Form\CityType;
+
 use JMS\Serializer\SerializationContext;
 
 use Nelmio\ApiDocBundle\Annotation\ApiDoc;
@@ -61,7 +63,7 @@ class CityController extends Controller
      * 
      * ```  
      *{
-     *  "city": "Rouen",
+     *  "name": "Rouen",
      *  "country": "France", // Or "country": "321"
      *  "latitude": 49.44313,
      *  "longitude": 1.09932
@@ -83,31 +85,24 @@ class CityController extends Controller
     public function postCityAction(Request $request)
     {
         $em = $this->getDoctrine()->getManager();
-        $repositoryCountry = $em->getRepository('PouceSiteBundle:Country');
+        $repositoryCity = $em->getRepository('PouceSiteBundle:City');
 
         //Get request objects
         $countryJSON = $request->request->get('country');
+        $cityJSON = $request->request->get('name');
 
-        //Check if id of country is sent or name of country
-        if(is_string($countryJSON))
-        {
-            $country = $repositoryCountry->findByName($countryJSON);
-        }
-        elseif(is_integer($countryJSON))
-        {
-            $country = $repositoryCountry->find($countryJSON);
-        }
-        else
-        {
-            throw $this->createNotFoundException();
-        }
-        
+        //Various check on the country and transform request to coutry object
+        $country = $this->checkCountry($countryJSON);
 
-        //Check if team and city exist
-        if(!is_object($country)){
+        $city = $repositoryCity->findOneByName($cityJSON);
+
+        //Check if city already exist
+        if(is_object($city)){
+            //TODO: Change for more accurate error
             throw $this->createNotFoundException();
         }
 
+        // If not found, we create a new one
         $city = new City();
 
         // On crée le FormBuilder grâce au service form factory
@@ -116,6 +111,8 @@ class CityController extends Controller
         $form->submit($request->request->all()); // Validation des données / adaptation de symfony au format REST
 
         if ($form->isValid()) {
+
+            $city->setCountry($country);
 
             //Enregistrement
             $em->persist($city);
@@ -127,5 +124,41 @@ class CityController extends Controller
         else {
             return $form;
         }
+    }
+
+    /**
+     * Various check on the country and transform request to coutry object
+     * Used in postCity
+     * 
+     * @param  [type] $countryJSON [Country request: Id or name of the country]
+     * @return [type]              [Country Object]
+     */
+    private function checkCountry($countryJSON)
+    {
+        $em = $this->getDoctrine()->getManager();
+        $repositoryCountry = $em->getRepository('PouceSiteBundle:Country');
+
+        //Check if id of country is sent or name of country
+        if(is_null($countryJSON))
+        {
+            //TODO: Change for more accurate error
+            throw $this->createNotFoundException();
+        }
+        elseif (preg_match('/^[0-9]+$/', $countryJSON))
+        {
+            // contains only digits
+            $country = $repositoryCountry->find($countryJSON);
+        }
+        else
+        {
+            $country = $repositoryCountry->findOneByName($countryJSON);
+        }
+        
+        //Check if country exist
+        if(!is_object($country)){
+            throw $this->createNotFoundException();
+        }
+
+        return $country;
     }
 }

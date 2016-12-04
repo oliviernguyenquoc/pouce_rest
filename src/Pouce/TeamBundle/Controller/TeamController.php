@@ -151,8 +151,26 @@ class TeamController extends Controller
 		}
 
 		//Check if someone have already a team for this edition
-		$editionId = $request->request->get("editionId");
-		
+		$startCityResquested = $request->request->get("startCity");
+
+		//Check if startCity exist
+		if(!is_null($startCityResquested))
+		{
+			$startCity = $em -> getRepository('PouceSiteBundle:City')->find($startCityResquested);
+			if(is_null($startCity)){
+				throw $this->createNotFoundException();
+			}
+		}
+		else
+		{
+			//TODO: Change for better exception
+			throw $this->createNotFoundException();
+		}
+
+
+		//Check if someone have already a team for this edition
+-       $editionId = $request->request->get("editionId");
+
 		$hasATeam = $this->isUsersRegisteredInThisEdition($user1,$user2,$editionId);
 
 		if($hasATeam)
