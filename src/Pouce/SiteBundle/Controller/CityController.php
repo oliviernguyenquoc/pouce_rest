@@ -5,6 +5,7 @@ namespace Pouce\SiteBundle\Controller;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
+use Symfony\Component\HttpKernel\Exception\HttpException;
 
 use Pouce\SiteBundle\Entity\Edition;
 use Pouce\SiteBundle\Entity\City;
@@ -98,8 +99,7 @@ class CityController extends Controller
 
         //Check if city already exist
         if(is_object($city)){
-            //TODO: Change for more accurate error
-            throw $this->createNotFoundException();
+            throw new HttpException(500, "The city you are trying to add already exist");
         }
 
         // If not found, we create a new one
@@ -141,8 +141,7 @@ class CityController extends Controller
         //Check if id of country is sent or name of country
         if(is_null($countryJSON))
         {
-            //TODO: Change for more accurate error
-            throw $this->createNotFoundException();
+            throw new HttpException(500, "No id are name for the country");
         }
         elseif (preg_match('/^[0-9]+$/', $countryJSON))
         {
@@ -156,7 +155,7 @@ class CityController extends Controller
         
         //Check if country exist
         if(!is_object($country)){
-            throw $this->createNotFoundException();
+            throw new HttpException(500, "The country doesn't exist");
         }
 
         return $country;
