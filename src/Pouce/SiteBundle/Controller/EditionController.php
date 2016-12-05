@@ -234,7 +234,7 @@ class EditionController extends Controller
         $em->remove($edition);
         $em->flush();
 
-        $response = new Response("Edition deleted.", 204);  
+        $response = new Response("Edition deleted.", 204);
         return $response;
     }
 }
