@@ -40,7 +40,7 @@ class CityControllerTest extends WebTestCase
         $this->assertTrue(isset($content['longitude']));
     }
 
-    public function testPostAndDeleteCity()
+    public function testPostCity()
     {
         $client = $this->createClient();
         $data = array(
@@ -65,6 +65,34 @@ class CityControllerTest extends WebTestCase
         $response = $client->getResponse();
         $this->assertEquals(500, $response->getStatusCode());
 
+
+        /*****************  Remove city  ******************/
+        $repositoryCity = $this->em->getRepository('PouceSiteBundle:City');
+
+        $city = $repositoryCity->findOneBy(array(),array('id' => 'DESC'));
+
+
+        $this->em->remove($city);
+        $this->em->flush();
+    }
+
+    public function testPostCityWithCountryId()
+    {
+        $client = $this->createClient();
+        $data = array(
+            "name"      => "TryCity",
+            "country"   => 8, 
+            "latitude"  => 49.0011,
+            "longitude" => 1.0011
+        );
+
+        $client->request('POST','/api/v1/cities',array(), array(), array('CONTENT_TYPE' => 'application/json'), json_encode($data));
+
+        $response = $client->getResponse();
+        $this->assertEquals(201, $response->getStatusCode());
+
+        $content = $response->getContent();
+        $this->assertEquals($content,"City created.");
 
         /*****************  Remove city  ******************/
         $repositoryCity = $this->em->getRepository('PouceSiteBundle:City');
