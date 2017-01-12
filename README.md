@@ -19,9 +19,10 @@ Repository for the Symfony version of restful service for Pouce d'Or Website : w
 
 ## For Version 1.0
 
+* Delete promotion in registration
+* Deal with email service not to be marked as spam
 * Add security layer with user roles
 * Capifony (Deployment Tool)
-* Deal with email service not to be marked as spam
 
 ## For Version 2.0
 
