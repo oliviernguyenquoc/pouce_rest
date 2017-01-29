@@ -41,7 +41,6 @@ class UserControllerTest extends WebTestCase
                 'last_name'     => 'NomTest',
                 'sex'           => 'Femme',
                 'school'        => 'École centrale de Lille',
-                'promotion'     => 'Bac +1',
                 'telephone'     => '0600000000'
             )
         );
@@ -65,7 +64,6 @@ class UserControllerTest extends WebTestCase
             'last_name'     => 'NomTest2',
             'sex'           => 'Homme',
             'school'        => 'Ecole Centrale de Nantes',
-            'promotion'     => 'Bac +3',
             'telephone'     => '0611111111'
         );
 
@@ -80,7 +78,6 @@ class UserControllerTest extends WebTestCase
         $user_modified = json_decode($this->client->getResponse()->getContent(), true);
         $this->assertEquals('PrenomTest2',$user_modified['first_name']);
         $this->assertEquals(1,$user_modified['school']['id']);
-        $this->assertEquals('Bac +3', $user_modified['promotion']);
         $this->assertEquals('0611111111', $user_modified['telephone']);
         $this->assertTrue(isset($user_modified['email']));
         $this->assertNotEquals('',$user_modified['email']);

@@ -38,7 +38,6 @@ class UserController extends Controller
 	 *	"first_name": "Olivier"
 	 *	"last_name": "Dupond"
 	 *	"sex": "Homme"
-	 *	"promotion": "Bac +5"
 	 *	"telephone": "0606060606"
 	 *	"school": 
 	 *	{
@@ -197,7 +196,6 @@ class UserController extends Controller
 	 *        "last_name"     : "NomTest",
 	 *        "sex"           : "Femme",
      *        "school"        : "École centrale de Lille",
-	 *        "promotion"     : "Bac +1",
 	 *        "telephone"     : "0600000000"
 	 *    }
 	 *}
@@ -298,7 +296,6 @@ class UserController extends Controller
 	 *        "last_name"     : "NomTest",
 	 *        "sex"           : "Femme",
      *        "school"        : "École centrale de Lille",
-	 *        "promotion"     : "Bac +3",
 	 *        "telephone"     : "0600000000"
 	 *    }
 	 *}
@@ -351,7 +348,6 @@ class UserController extends Controller
      //    $last_name = $request->request->get("last_name");
      //    $sex = $request->request->get("sex");
      //    $school = $request->request->get("school");
-     //    $promotion = $request->request->get("promotion");
      //    $telephone = $request->request->get("telephone");
 
         if($form->isValid()){

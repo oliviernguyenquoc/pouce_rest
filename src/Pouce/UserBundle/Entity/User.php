@@ -74,13 +74,10 @@ class User extends BaseUser
     protected $sex;
 
     /**
-     * User year of school
+     * User year of school (Depreciated)
      * 
      * @ORM\Column(type="string", nullable=true)
-     * @Assert\NotBlank(message="Entrez votre promotion.", groups={"updateRegistration"})
      * @Assert\Choice({"Bac +1", "Bac +2", "Bac +3", "Bac +4", "Bac +5", "Bac +6", "Doctorant"})
-     *
-     * @Groups({"user","team"})
      *
      * @var string
      */

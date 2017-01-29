@@ -19,8 +19,7 @@ Repository for the Symfony version of restful service for Pouce d'Or Website : w
 
 ## For Version 1.0
 
-* Delete promotion in registration
-* Deal with email service not to be marked as spam
+* Deal with email service not to be marked as spam: Integrate (https://sendgrid.com/docs/Integrate/Frameworks/symfony.html)
 * Add security layer with user roles
 * Capifony (Deployment Tool)
 
@@ -91,7 +90,7 @@ Install phpUnit on your machine: https://phpunit.de/getting-started.html
 
 WARNING : See Issues paragraph
 
-Run tests with the command: phpunit
+Run tests with the command: phpUnit
 
 # The project
 
