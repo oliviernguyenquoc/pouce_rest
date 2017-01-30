@@ -47,28 +47,6 @@ class RegistrationType extends AbstractType
                     return $er-> getAllSchools($year); //TODO: Change method
                 },
             ))
-            ->add('promotion', ChoiceType::class, array(
-                'choices' => array(
-                    'Licence 1'                                      => 'Bac +1',
-                    'Licence 2'                                      => 'Bac +2',
-                    'Licence 3'                                      => 'Bac +3', 
-                    'Master 1'                                       => 'Bac +4', 
-                    'Master 2'                                       => 'Bac +5', 
-                    'Mastère spécialisé'                             => 'Bac +6', 
-                    'Doctorant'                                      => 'Doctorant',
-                    '1ère année de prépa'                            => 'Bac +1',
-                    '2ème année de prépa (3/2)'                      => 'Bac +2', 
-                    '3ème année de prépa (5/2)'                      => 'Bac +3', 
-                    '1ère année d\'école (cycle ingénieur/manageur)' => 'Bac +3', 
-                    '2ème année d\'école (cycle ingénieur/manageur)' => 'Bac +4', 
-                    '3ème année d\'école (cycle ingénieur/manageur)' => 'Bac +5'
-                ),
-                'choice_value' => function ($value) {
-                    return $value;
-                },
-                'label'         => 'Promotion',
-                'required'      => true
-            ))
             ->add('telephone', TextType::class, array(
                 'label'=> 'Numéro de téléphone',
                 'required'    => true

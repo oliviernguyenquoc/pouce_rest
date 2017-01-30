@@ -37,7 +37,6 @@ class CustomTestcase extends WebTestCase
                 'last_name'     => 'NomTest'.$number,
                 'sex'           => $genre,
                 'school'        => 'École centrale de Lille',
-                'promotion'     => 'Bac +1',
                 'telephone'     => '0600000000'
             )
         );

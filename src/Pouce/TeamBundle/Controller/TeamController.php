@@ -36,7 +36,6 @@ class TeamController extends Controller
 	 *			"first_name": "Olivier"
 	 *			"last_name": "Dupond"
 	 *			"sex": "Homme"
-	 *			"promotion": "Bac +4"
 	 *			"telephone": "0606060606"
 	 *		}
 	 *		{
@@ -44,7 +43,6 @@ class TeamController extends Controller
 	 *			"first_name": "Olivia"
 	 *			"last_name": "Dupond"
 	 *			"sex": "Femme"
-	 *			"promotion": "Bac +4"
 	 *			"telephone": "0606060606"
 	 *		}
 	 *	],
@@ -361,7 +359,6 @@ class TeamController extends Controller
 	 *			"first_name": "Olivier"
 	 *			"last_name": "Dupond"
 	 *			"sex": "Homme"
-	 *			"promotion": "Bac +4"
 	 *			"telephone": "0606060606"
 	 *		}
 	 *		{
@@ -369,7 +366,6 @@ class TeamController extends Controller
 	 *			"first_name": "Olivia"
 	 *			"last_name": "Dupond"
 	 *			"sex": "Femme"
-	 *			"promotion": "Bac +4"
 	 *			"telephone": "0606060606"
 	 *		}
 	 *	],

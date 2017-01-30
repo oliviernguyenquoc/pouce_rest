@@ -46,6 +46,10 @@ If you need to add one, there is a location service which able to retrieve city 
 
 Service made with BazingaGeocoderBundle.
 
+## Distances
+
+Distances are calculated with this project: https://github.com/Project-OSRM/osrm-backend/blob/master/docs/http.md#route-service
+
 ## Teams
 
 Only teams of 2 users.
@@ -53,9 +57,13 @@ Front-end will let only 2 users from the same school to make a team but backend 
 
 # Tech
 
-## Serialization
+## Documentation
 
-We used JMSSerializerBundle for serialization with groups annotations in models.
+Documentation is made with NelmioApiDocBundle. We use '@ApiDoc' tag before each method to specify what to put in the API genrated documentation.
+
+## Serialization and groups
+
+We used JMSSerializerBundle for serialization with groups annotations in models. In each entity, we specify which property belongs to what to ensure the serialization process (see JMSSerializerBundle documentation).
 
 ## RESTful
 
