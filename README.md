@@ -21,7 +21,8 @@ Repository for the Symfony version of restful service for Pouce d'Or Website : w
 
 * Deal with email service not to be marked as spam: Integrate (https://sendgrid.com/docs/Integrate/Frameworks/symfony.html)
 * Add security layer with user roles
-* Capifony (Deployment Tool)
+* Google App Engine
+* Refactor tests
 
 ## For Version 2.0
 
@@ -31,6 +32,12 @@ Repository for the Symfony version of restful service for Pouce d'Or Website : w
 
 phpunit have issues : Fixed it by installing phpunit through composer.
 Have to run it : "./vendor/bin/phpunit"
+
+# Tips 
+
+## Allow more memory to PHP
+
+php -d memory_limit=-1 /usr/local/bin/composer update
 
 
 # How it works
@@ -99,6 +106,10 @@ Install phpUnit on your machine: https://phpunit.de/getting-started.html
 WARNING : See Issues paragraph
 
 Run tests with the command: phpUnit
+
+## Deploy
+
+Run "sh deploy.sh"
 
 # The project
 
